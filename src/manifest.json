@@ -1,5 +1,8 @@
 {
   "name": "Price Tracker",
+  "version": "0.0.1",
+  "description": "A chrome extension to track ecommerce product prices",
+  "permissions": ["activeTab", "declarativeContent", "storage"],
   "options_page": "options.html",
   "background": {
     "page": "background.html"
