@@ -1,53 +1,53 @@
 body {
-    font-family: 'Montserrat', sans-serif;
-    width: 300px;
-    text-align: center;
+  font-family: "Montserrat", sans-serif;
+  width: 300px;
+  text-align: center;
 }
 
 #header {
-    padding-bottom: 70px;
+  padding-bottom: 70px;
 }
 
-#title {
-    top: 120px;
-    left: 0;
-    right: 0;
-    font-weight: 600;
-    font-size: 20px;
-    text-transform: uppercase;
+.title {
+  top: 120px;
+  left: 0;
+  right: 0;
+  font-weight: 600;
+  font-size: 20px;
+  text-transform: uppercase;
 }
 
 .loginType input {
-    width: 250px;
-    padding: 10px 15px;
-    margin: 7px;
-    border: none;
-    border: 1px solid lightgray;
+  width: 250px;
+  padding: 10px 15px;
+  margin: 7px;
+  border: none;
+  border: 1px solid lightgray;
 }
 
 .loginType button {
-    width: 275px;
-    margin: 15px 0px;
-    text-transform: uppercase;
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 16px 32px;
-    text-decoration: none;
-    cursor: pointer;
+  width: 275px;
+  margin: 15px 0px;
+  text-transform: uppercase;
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 #header button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    cursor: pointer;
-    color: lightgray;
-    background-color: white;
-    border: none;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  color: lightgray;
+  background-color: white;
+  border: none;
 }
 
 .bottomText {
-    margin-top: 90px;
-    margin-bottom: 20px;
+  margin-top: 90px;
+  margin-bottom: 20px;
 }
