@@ -1,9 +1,9 @@
 import "../css/popup.css";
 import React from "react";
-import Main from "./popup/Main"
+import Router from "./popup/Router"
 import { render } from "react-dom";
 
 render(
-  <Main/>,
+  <Router/>,
   window.document.getElementById("app-container")
 );

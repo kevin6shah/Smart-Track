@@ -7,11 +7,9 @@ export default class Login extends Component {
         error: false,
     }
 
-    checkCredentials = (email, password) => {
+    checkCredentialsAndLogin = (email, password) => {
         if (email === 'test' && password === 'test') {
-            this.setState({
-                error: false,
-            })
+            this.props.routeTo('main')
         } else {
             this.setState({
                 error: true,
@@ -29,7 +27,7 @@ export default class Login extends Component {
                     }}>
                         Please try again with valid credentials!
                     </p> : <div />}
-                <SignInForm buttonText='Log In' onSubmit={this.checkCredentials}/>
+                <SignInForm buttonText='Log In' onSubmit={this.checkCredentialsAndLogin}/>
                 <div className='bottomText'>
                     Not a Price Tracker user yet?<br/>
                     <a href='#' onClick={this.props.routeTo.bind(this, 'register')}>
