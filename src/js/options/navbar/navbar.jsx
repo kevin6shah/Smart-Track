@@ -5,7 +5,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from 'react-router-dom';
 import { hot } from "react-hot-loader";
 
-import Logo from '../../../img/logo2.png';
+import Logo from '../../../img/logo.png';
 
 class OptionsNavbar extends React.Component {
 
