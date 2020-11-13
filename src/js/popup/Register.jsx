@@ -8,12 +8,13 @@ export default class Register extends Component {
             <div>
                 <Header />
                 <SignInForm buttonText='Register' />
-                <div className='bottomText'>
-                    Go back to Log In Page?<br/>
-                    <a href='#' onClick={this.props.routeTo.bind(this, 'login')}>
-                        Click Here
-                    </a>
-                </div>
+                <button className='customIcon' style={{
+                    fontSize: '24px',
+                    top: '10px',
+                    left: '5px',
+                }} onClick={this.props.routeTo.bind(this, 'login')}>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
             </div>
         )
     }

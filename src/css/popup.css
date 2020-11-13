@@ -37,10 +37,8 @@ body {
   cursor: pointer;
 }
 
-#header button {
+.customIcon {
   position: absolute;
-  top: 5px;
-  right: 5px;
   cursor: pointer;
   color: lightgray;
   background-color: white;

@@ -12,8 +12,12 @@ export default class Header extends Component {
             <div id='header'>
                 <img src={logo} width="150px" height="150px"/>
                 <div className='title'>Price Tracker</div>
-                <button style={{ fontSize: '24px' }} onClick={this.onOptionsClicked}>
-                    <i className="fa fa-gear"></i>
+                <button className='customIcon' style={{
+                    fontSize: '24px',
+                    top: '10px',
+                    right: '5px',
+                }} onClick={this.onOptionsClicked}>
+                    <i class="fas fa-cog"></i>
                 </button>
             </div>
         )
