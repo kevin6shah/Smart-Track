@@ -49,7 +49,11 @@ var options = {
       {
         test: /\.(js|jsx)$/,
         loader: "babel-loader",
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        options: {
+            presets: ['@babel/react',{
+                      'plugins': ['@babel/plugin-proposal-class-properties']}]
+        }
       }
     ]
   },

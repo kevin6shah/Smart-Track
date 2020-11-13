@@ -9,7 +9,6 @@ body {
 }
 
 #title {
-    position: absolute;
     top: 120px;
     left: 0;
     right: 0;
@@ -18,7 +17,7 @@ body {
     text-transform: uppercase;
 }
 
-input {
+.loginType input {
     width: 250px;
     padding: 10px 15px;
     margin: 7px;
@@ -26,7 +25,7 @@ input {
     border: 1px solid lightgray;
 }
 
-form button {
+.loginType button {
     width: 275px;
     margin: 15px 0px;
     text-transform: uppercase;
@@ -48,7 +47,7 @@ form button {
     border: none;
 }
 
-#register {
+.bottomText {
     margin-top: 90px;
     margin-bottom: 20px;
 }
