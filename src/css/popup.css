@@ -8,11 +8,46 @@ hr {
   margin-top: 15px;
   margin-bottom: 15px;
   border: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid #0000001a;
 }
 
 #header {
   padding-bottom: 70px;
+}
+
+.orLine {
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap; 
+    margin-top: 20px;
+    margin-bottom: 35px;
+}
+
+.orLine > span {
+    position: relative;
+    display: inline-block;
+    color: #adadad;
+}
+
+.orLine > span:before,
+.orLine > span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 80px;
+    height: 1px;
+    background: #0000001a;
+}
+
+.orLine > span:before {
+    right: 100%;
+    margin-right: 15px;
+}
+
+.orLine > span:after {
+    left: 100%;
+    margin-left: 15px;
 }
 
 .title {
@@ -25,7 +60,8 @@ hr {
 }
 
 .titleMain {
-  text-align: left;
+  text-transform: uppercase;
+  text-align: center;
   font-weight: 600;
   font-size: 12px;
   padding: 9px 42px;
@@ -37,12 +73,12 @@ hr {
   margin: 7px;
   border: none;
   border: 1px solid lightgray;
+  font-family: "Montserrat", sans-serif;
 }
 
 .bigButton,
 .trackedListButton {
   width: 300px;
-  margin: 15px 0px;
   text-transform: uppercase;
   background-color: #4caf50;
   border: none;
@@ -55,7 +91,6 @@ hr {
 
 .trackedListButton {
   background-color: orange;
-  margin: 0px;
 }
 
 .bigButton:hover {
@@ -84,11 +119,6 @@ hr {
 
 .customIcon:hover {
   color: #b4b4b4;
-}
-
-.bottomText {
-  margin-top: 90px;
-  margin-bottom: 20px;
 }
 
 .itemPic {

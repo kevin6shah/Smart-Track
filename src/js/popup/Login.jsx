@@ -28,12 +28,10 @@ export default class Login extends Component {
                         Please try again with valid credentials!
                     </p> : <div />}
                 <SignInForm buttonText='Log In' onSubmit={this.checkCredentialsAndLogin}/>
-                <div className='bottomText'>
-                    Not a Price Tracker user yet?<br/>
-                    <a href='#' onClick={this.props.routeTo.bind(this, 'register')}>
-                        Sign up
-                    </a>
-                </div>
+                <div className='orLine'><span>OR</span></div>
+                <button className='trackedListButton' onClick={this.props.routeTo.bind(this, 'register')} style={{ marginBottom: '15px'}}>
+                    Sign up
+                </button>
             </div>
         )
     }

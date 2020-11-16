@@ -7,7 +7,7 @@ export default class Register extends Component {
         return (
             <div>
                 <Header />
-                <SignInForm buttonText='Register' />
+                <SignInForm buttonText='Register' buttonStyle='orange'/>
                 <button className='customIcon' style={{
                     fontSize: '24px',
                     top: '10px',

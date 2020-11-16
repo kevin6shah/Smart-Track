@@ -21,6 +21,12 @@ export default class SignInForm extends Component {
         this.props.onSubmit(this.state.email, this.state.password)
     }
 
+    getClass = () => {
+        if (this.props.buttonStyle === 'orange') {
+            return 'trackedListButton';
+        } else return 'bigButton';
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -29,7 +35,9 @@ export default class SignInForm extends Component {
                         placeholder="Email" required="true" value={this.state.email}/><br />
                     <input type="password" id="password" name="password" onChange={this.onChange}
                         placeholder="Password" required="true" value={this.state.password}/><br />
-                    <button className='bigButton'>{this.props.buttonText}</button>
+                    <button className={this.getClass()} style={{
+                        margin: '15px 0px'
+                    }}>{this.props.buttonText}</button>
                 </form>
             </React.Fragment>
         )
