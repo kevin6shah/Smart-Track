@@ -4,6 +4,13 @@ body {
   text-align: center;
 }
 
+hr {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
 #header {
   padding-bottom: 70px;
 }
@@ -17,6 +24,13 @@ body {
   text-transform: uppercase;
 }
 
+.titleMain {
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 9px 42px;
+}
+
 .loginType input {
   width: 250px;
   padding: 10px 15px;
@@ -25,7 +39,8 @@ body {
   border: 1px solid lightgray;
 }
 
-.loginType button {
+.loginType button,
+.bigButton {
   width: 275px;
   margin: 15px 0px;
   text-transform: uppercase;
@@ -35,6 +50,12 @@ body {
   padding: 16px 32px;
   text-decoration: none;
   cursor: pointer;
+}
+
+.graph {
+  width: 275px;
+  height: 215px;
+  object-fit: contain;
 }
 
 .customIcon {
@@ -48,4 +69,26 @@ body {
 .bottomText {
   margin-top: 90px;
   margin-bottom: 20px;
+}
+
+.itemPic {
+  object-fit: contain;
+}
+
+.itemContainer {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  height: 100px;
+}
+
+span p {
+  margin: 0px;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
 }

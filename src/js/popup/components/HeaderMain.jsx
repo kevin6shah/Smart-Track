@@ -1,16 +1,20 @@
 import React, { Component } from 'react'
 import logo from "../../../img/logo.png"
 
-export default class Header extends Component {
+export default class HeaderMain extends Component {
     onOptionsClicked = () => {
         chrome.runtime.openOptionsPage()
     }
 
     render() {
         return (
-            <div id='header'>
-                <img src={logo} width="150px" height="150px"/>
-                <div className='title'>Price Tracker</div>
+            <div>
+                <img src={logo} style={{
+                    position: "absolute",
+                    left: '5px',
+                    top: '3px',
+                }} width="45px" height="45px"/>
+                <div className='titleMain'>Price Tracker</div>
                 <button className='customIcon' style={{
                     fontSize: '24px',
                     top: '10px',
@@ -18,6 +22,7 @@ export default class Header extends Component {
                 }} onClick={this.onOptionsClicked}>
                     <i class="fas fa-cog"></i>
                 </button>
+                <hr style={{marginBottom: '15px', marginTop: '5px'}}/>
             </div>
         )
     }
