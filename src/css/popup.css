@@ -1,6 +1,6 @@
 body {
   font-family: "Montserrat", sans-serif;
-  width: 300px;
+  width: 325px;
   text-align: center;
 }
 
@@ -32,16 +32,16 @@ hr {
 }
 
 .loginType input {
-  width: 250px;
+  width: 275px;
   padding: 10px 15px;
   margin: 7px;
   border: none;
   border: 1px solid lightgray;
 }
 
-.loginType button,
-.bigButton {
-  width: 275px;
+.bigButton,
+.trackedListButton {
+  width: 300px;
   margin: 15px 0px;
   text-transform: uppercase;
   background-color: #4caf50;
@@ -50,12 +50,27 @@ hr {
   padding: 16px 32px;
   text-decoration: none;
   cursor: pointer;
+  outline: none;
+}
+
+.trackedListButton {
+  background-color: orange;
+  margin: 0px;
+}
+
+.bigButton:hover {
+  background-color: #3e8f41;
+}
+
+.trackedListButton:hover {
+  background-color: #dd9000;
 }
 
 .graph {
-  width: 275px;
+  width: 300px;
   height: 215px;
   object-fit: contain;
+  cursor: pointer;
 }
 
 .customIcon {
@@ -64,6 +79,11 @@ hr {
   color: lightgray;
   background-color: white;
   border: none;
+  outline: none;
+}
+
+.customIcon:hover {
+  color: #b4b4b4;
 }
 
 .bottomText {
@@ -87,8 +107,27 @@ span p {
 }
 
 .footer {
+  width: 100%;
+}
+
+.footer button {
+  width: 100%;
+  background-color: #ffffff;
+  border: none;
+  color: #9b9b9b;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: left;
+  outline: none;
+}
+
+.footer button:hover {
+  color: #707070;
+}
+
+.footerItemContainer {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 15px;
+  justify-content: start;
+  height: 30px;
 }

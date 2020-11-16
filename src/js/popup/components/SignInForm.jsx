@@ -29,7 +29,7 @@ export default class SignInForm extends Component {
                         placeholder="Email" required="true" value={this.state.email}/><br />
                     <input type="password" id="password" name="password" onChange={this.onChange}
                         placeholder="Password" required="true" value={this.state.password}/><br />
-                    <button>{this.props.buttonText}</button>
+                    <button className='bigButton'>{this.props.buttonText}</button>
                 </form>
             </React.Fragment>
         )
