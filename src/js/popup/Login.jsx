@@ -12,8 +12,9 @@ export default class Login extends Component {
 
     checkCredentialsAndLogin = (email, password) => {
         firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((user) => {
+            .then((user) => {
             console.log(user.user.uid);
+            localStorage.setItem('uid', user.user.uid);
             this.props.routeTo('main')
         })
         .catch((error) => {

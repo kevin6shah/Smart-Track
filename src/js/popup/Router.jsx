@@ -5,7 +5,7 @@ import Main from './Main'
 
 export default class Router extends Component {
     state = {
-        routeTo: 'login'
+        routeTo: (localStorage.getItem('uid') !== null) ? 'main' : 'login'
     }
 
     handleRoute = (route) => {

@@ -8,7 +8,8 @@ require('firebase/auth')
 export default class Main extends Component {
     handleLogout = () => {
         const props = this.props;
-        firebase.auth().signOut().then(function() {
+        firebase.auth().signOut().then(function () {
+            localStorage.removeItem('uid');
             props.routeTo('login')
         }).catch(function(error) {
             console.log(error.message);
@@ -39,7 +40,7 @@ export default class Main extends Component {
                     <button onClick={this.handleLogout}>
                         <span className='footerItemContainer'>
                             <i className="fas fa-sign-out-alt" style={{flex: 1}}></i>
-                            <p style={{flex: 9}}>Log Out</p>
+                            <p style={{ flex: 9 }}>Log Out</p>
                             <i className="fas fa-chevron-right" style={{flex: 1, textAlign: 'right'}}></i>
                         </span>
                     </button><br />
