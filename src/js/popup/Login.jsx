@@ -1,20 +1,27 @@
 import Header from './components/Header'
 import SignInForm from './components/SignInForm'
 import React, { Component } from 'react'
+import firebase from 'firebase'
+require('firebase/auth')
 
 export default class Login extends Component {
     state = {
         error: false,
+        errorMessage: '',
     }
 
     checkCredentialsAndLogin = (email, password) => {
-        if (email === 'test' && password === 'test') {
+        firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((user) => {
+            console.log(user.user.uid);
             this.props.routeTo('main')
-        } else {
+        })
+        .catch((error) => {
             this.setState({
                 error: true,
+                errorMessage: error.message,
             })
-        }
+        });
     }
 
     render() {
@@ -25,7 +32,7 @@ export default class Login extends Component {
                     <p style={{
                         color: 'red',
                     }}>
-                        Please try again with valid credentials!
+                        {this.state.errorMessage}
                     </p> : <div />}
                 <SignInForm buttonText='Log In' onSubmit={this.checkCredentialsAndLogin}/>
                 <div className='orLine'><span>OR</span></div>

@@ -1,13 +1,46 @@
 import Header from './components/Header'
 import SignInForm from './components/SignInForm'
 import React, { Component } from 'react'
+import firebase from 'firebase'
+require('firebase/auth')
 
 export default class Register extends Component {
+    state = {
+        error: false,
+        errorMessage: '',
+        errorColor: 'red',
+    }
+
+    signUpUser = (email, password) => {
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((user) => {
+            console.log(user.user.uid);
+            this.setState({
+                error: true,
+                errorMessage: 'Successfully signed up! Please go back to the login page.',
+                errorColor: '#4caf50',
+            })
+        })
+        .catch((error) => {
+            this.setState({
+                error: true,
+                errorMessage: error.message,
+                errorColor: 'red',
+            })
+        });
+    }
+
     render() {
         return (
             <div>
                 <Header />
-                <SignInForm buttonText='Register' buttonStyle='orange'/>
+                {this.state.error ?
+                    <p style={{
+                        color: this.state.errorColor,
+                    }}>
+                        {this.state.errorMessage}
+                    </p> : <div />}
+                <SignInForm buttonText='Register' buttonStyle='orange' onSubmit={this.signUpUser}/>
                 <button className='customIcon' style={{
                     fontSize: '24px',
                     top: '10px',
