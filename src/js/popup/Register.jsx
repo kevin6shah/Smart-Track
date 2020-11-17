@@ -13,7 +13,7 @@ export default class Register extends Component {
                     top: '10px',
                     left: '5px',
                 }} onClick={this.props.routeTo.bind(this, 'login')}>
-                    <i class="fas fa-chevron-left"></i>
+                    <i className="fas fa-chevron-left"></i>
                 </button>
             </div>
         )

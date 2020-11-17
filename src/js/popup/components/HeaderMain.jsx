@@ -20,7 +20,7 @@ export default class HeaderMain extends Component {
                     top: '10px',
                     right: '5px',
                 }} onClick={this.onOptionsClicked}>
-                    <i class="fas fa-cog"></i>
+                    <i className="fas fa-cog"></i>
                 </button>
                 <hr style={{marginBottom: '15px', marginTop: '5px'}}/>
             </div>

@@ -16,7 +16,7 @@ export default class Header extends Component {
                     top: '10px',
                     right: '5px',
                 }} onClick={this.onOptionsClicked}>
-                    <i class="fas fa-cog"></i>
+                    <i className="fas fa-cog"></i>
                 </button>
             </div>
         )

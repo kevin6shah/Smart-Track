@@ -20,16 +20,16 @@ export default class Main extends Component {
                 <div className='footer'>
                     <button>
                         <span className='footerItemContainer'>
-                            <i class="fas fa-user" style={{flex: 1}}></i>
+                            <i className="fas fa-user" style={{flex: 1}}></i>
                             <p style={{flex: 9}}>Account Info</p>
-                            <i class="fas fa-chevron-right" style={{flex: 1, textAlign: 'right'}}></i>
+                            <i className="fas fa-chevron-right" style={{flex: 1, textAlign: 'right'}}></i>
                         </span>
                     </button><br />
                     <button onClick={this.props.routeTo.bind(this, 'login')}>
                         <span className='footerItemContainer'>
-                            <i class="fas fa-sign-out-alt" style={{flex: 1}}></i>
+                            <i className="fas fa-sign-out-alt" style={{flex: 1}}></i>
                             <p style={{flex: 9}}>Log Out</p>
-                            <i class="fas fa-chevron-right" style={{flex: 1, textAlign: 'right'}}></i>
+                            <i className="fas fa-chevron-right" style={{flex: 1, textAlign: 'right'}}></i>
                         </span>
                     </button><br />
                 </div>
