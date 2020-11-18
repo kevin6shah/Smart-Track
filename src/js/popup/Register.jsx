@@ -32,7 +32,7 @@ export default class Register extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{marginBottom: '170px'}}>
                 <Header />
                 {this.state.error ?
                     <p style={{
