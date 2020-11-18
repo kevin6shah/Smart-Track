@@ -13,7 +13,7 @@ export default class ListItem extends Component {
                         <img src='https://www.marketplace.org/wp-content/uploads/2019/07/Amazondotcom.png' height='17px' width='90px'/>
                         <p style={{
                             marginTop: '5px'
-                        }}>{this.props.scrapedData.title}</p>
+                        }}>{this.props.scrapedData.title.substring(0, 80) + "..."}</p>
                     </div>
                 </span>
                 <hr/>
