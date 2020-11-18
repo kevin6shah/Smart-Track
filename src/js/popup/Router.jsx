@@ -19,7 +19,8 @@ export default class Router extends Component {
         } else if (this.state.routeTo === 'register') {
             return <Register routeTo={this.handleRoute}/>
         } else if (this.state.routeTo === 'main') {
-            return <Main routeTo={this.handleRoute}/>
+            return <Main routeTo={this.handleRoute}
+                scrapedData={this.props.scrapedData} />
         } else if (this.state.routeTo === 'resetpwd') {
             return <ResetPassword routeTo={this.handleRoute}/>
         }

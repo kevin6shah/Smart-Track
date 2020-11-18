@@ -20,7 +20,7 @@ export default class Main extends Component {
         return (
             <div>
                 <HeaderMain />
-                <ListItem />
+                <ListItem scrapedData={this.props.scrapedData}/>
                 <button className='bigButton' style={{
                     margin: '0px',
                 }}>Track</button>

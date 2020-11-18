@@ -5,7 +5,7 @@ export default class ListItem extends Component {
         return (
             <div style={{ textAlign: 'left' }}>
                 <span className='itemContainer'>
-                    <img src='https://images-na.ssl-images-amazon.com/images/I/71aclXndH3L._AC_SL1500_.jpg'
+                    <img src={this.props.scrapedData.img}
                         className='itemPic' height='100px' width='100px'/>
                     <div style={{
                         padding: '5px',
@@ -13,7 +13,7 @@ export default class ListItem extends Component {
                         <img src='https://www.marketplace.org/wp-content/uploads/2019/07/Amazondotcom.png' height='17px' width='90px'/>
                         <p style={{
                             marginTop: '5px'
-                        }}>YAMAHA FS800 Small Body Solid Top Acoustic Guitar, Natural</p>
+                        }}>{this.props.scrapedData.title}</p>
                     </div>
                 </span>
                 <hr/>
@@ -25,7 +25,7 @@ export default class ListItem extends Component {
                     <p style={{
                         fontWeight: 500,
                     }}>Current Price:</p>
-                    <p >$199.99</p>
+                    <p >{this.props.scrapedData.price}</p>
                 </span>
                 <hr/>
             </div>

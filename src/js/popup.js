@@ -21,7 +21,9 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
-render(
-  <Router/>,
-  window.document.getElementById("app-container")
-);
+chrome.storage.local.get("scrapedData", function (data) {
+  render(
+    <Router scrapedData={data.scrapedData}/>,
+    window.document.getElementById("app-container")
+  );
+});
