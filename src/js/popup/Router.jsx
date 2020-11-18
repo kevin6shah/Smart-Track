@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import Login from './Login'
 import Register from './Register'
 import Main from './Main'
+import ResetPassword from './ResetPassword'
 
 export default class Router extends Component {
     state = {
-        routeTo: (localStorage.getItem('uid') !== null) ? 'main' : 'login'
+        routeTo: (localStorage.getItem('uid') !== null) ? 'main' : 'login',
     }
 
     handleRoute = (route) => {
@@ -19,6 +20,8 @@ export default class Router extends Component {
             return <Register routeTo={this.handleRoute}/>
         } else if (this.state.routeTo === 'main') {
             return <Main routeTo={this.handleRoute}/>
+        } else if (this.state.routeTo === 'resetpwd') {
+            return <ResetPassword routeTo={this.handleRoute}/>
         }
     }
 

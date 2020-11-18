@@ -1,33 +1,39 @@
 import Header from './components/Header'
-import SignInForm from './components/SignInForm'
 import React, { Component } from 'react'
 import firebase from 'firebase'
 require('firebase/auth')
 
-export default class Register extends Component {
+export default class ResetPassword extends Component {
     state = {
         error: false,
         errorMessage: '',
         errorColor: 'red',
+        email: '',
     }
 
-    signUpUser = (email, password) => {
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((user) => {
-            console.log(user.user.uid);
+    onChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value,
+        })
+    }
+
+    onSubmit = (e) => {
+        e.preventDefault()
+        firebase.auth().sendPasswordResetEmail(this.state.email).then(() => {
             this.setState({
                 error: true,
-                errorMessage: 'Successfully signed up! Please go back to the login page.',
                 errorColor: '#4caf50',
+                errorMessage: 'Password reset instructions were sent to your email',
+                email: '',
+            })
+        }).catch(error => {
+            this.setState({
+                error: true,
+                errorColor: 'red',
+                errorMessage: error.message,
+                email: '',
             })
         })
-            .catch((error) => {
-            this.setState({
-                error: true,
-                errorMessage: (error.code === 'auth/weak-password') ? 'The password is too weak.' : error.message,
-                errorColor: 'red',
-            })
-        });
     }
 
     render() {
@@ -40,7 +46,13 @@ export default class Register extends Component {
                     }}>
                         {this.state.errorMessage}
                     </p> : <div />}
-                <SignInForm buttonText='Register' buttonStyle='orange' onSubmit={this.signUpUser}/>
+                <form className='loginType' onSubmit={this.onSubmit} style={{marginBottom: '220px'}}>
+                    <input type="text" id="email" name="email" onChange={this.onChange}
+                        placeholder="Email" required={true} value={this.state.email}/><br />
+                    <button className='bigButton' style={{
+                        margin: '15px 0px'
+                    }}>Reset Password</button>
+                </form>
                 <button className='customIcon' style={{
                     fontSize: '24px',
                     top: '10px',

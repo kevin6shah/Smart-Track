@@ -35,7 +35,8 @@ export default class Login extends Component {
                     }}>
                         {this.state.errorMessage}
                     </p> : <div />}
-                <SignInForm buttonText='Log In' onSubmit={this.checkCredentialsAndLogin}/>
+                <SignInForm buttonText='Log In' onSubmit={this.checkCredentialsAndLogin} />
+                <a href='#' onClick={this.props.routeTo.bind(this, 'resetpwd')} style={{textDecoration: 'none'}}>Forgot Password?</a>
                 <div className='orLine'><span>OR</span></div>
                 <button className='trackedListButton' onClick={this.props.routeTo.bind(this, 'register')} style={{ marginBottom: '15px'}}>
                     Sign up
