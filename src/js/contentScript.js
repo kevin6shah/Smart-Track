@@ -1,5 +1,4 @@
 import JSSoup from 'jssoup';
-// localStorage.setItem("YO", 'Yo')
 
 function DOMtoString(document_root) {
     var html = '',
