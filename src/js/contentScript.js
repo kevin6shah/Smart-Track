@@ -29,8 +29,7 @@ function DOMtoString(document_root) {
 
 function scrapeAmazonData(html) {
     var soup = new JSSoup(html)
-    let price = 'Not available', title = 'Not available'
-    let img = 'https://www.bu.edu/bedac/files/2015/10/Photo-placeholder.jpg'
+    let price = '', title = '', img = ''
     const priceIDs = ['priceblock_ourprice', 'priceblock_saleprice', 'priceblock_dealprice']
 
     for (var i = 0; i < priceIDs.length; i++) {
