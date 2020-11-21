@@ -58,4 +58,5 @@ const rawHtml = DOMtoString(document)
 
 let data = scrapeAmazonData(rawHtml)
 
+data['url'] = window.location.toString()
 chrome.storage.local.set({ scrapedData: data });
