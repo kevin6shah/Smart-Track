@@ -12,59 +12,46 @@ hr {
 }
 
 #header {
-  padding-bottom: 70px;
+  padding-bottom: 5px;
+}
+
+#header img {
+  padding: 20px;
 }
 
 .orLine {
-    display: block;
-    text-align: center;
-    overflow: hidden;
-    white-space: nowrap; 
-    margin-top: 30px;
-    margin-bottom: 35px;
+  display: block;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-top: 30px;
+  margin-bottom: 35px;
 }
 
 .orLine > span {
-    position: relative;
-    display: inline-block;
-    color: #adadad;
+  position: relative;
+  display: inline-block;
+  color: #adadad;
 }
 
 .orLine > span:before,
 .orLine > span:after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 80px;
-    height: 1px;
-    background: #0000001a;
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 80px;
+  height: 1px;
+  background: #0000001a;
 }
 
 .orLine > span:before {
-    right: 100%;
-    margin-right: 15px;
+  right: 100%;
+  margin-right: 15px;
 }
 
 .orLine > span:after {
-    left: 100%;
-    margin-left: 15px;
-}
-
-.title {
-  top: 120px;
-  left: 0;
-  right: 0;
-  font-weight: 600;
-  font-size: 20px;
-  text-transform: uppercase;
-}
-
-.titleMain {
-  text-transform: uppercase;
-  text-align: center;
-  font-weight: 600;
-  font-size: 12px;
-  padding: 9px 42px;
+  left: 100%;
+  margin-left: 15px;
 }
 
 .loginType input {

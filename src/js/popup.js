@@ -2,6 +2,9 @@ import "../css/popup.css";
 import React from "react";
 import Router from "./popup/Router"
 import { render } from "react-dom";
+import "../img/icon-16.png";
+import "../img/icon-38.png";
+import "../img/icon-128.png";
 import firebase from 'firebase'
 require('firebase/auth')
 
@@ -22,8 +25,13 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
 chrome.storage.local.get("scrapedData", function (data) {
+  const initData = {
+    image: 'https://www.bu.edu/bedac/files/2015/10/Photo-placeholder.jpg',
+    body: "Not Available",
+    price: "Not Available"
+  }
   render(
-    <Router scrapedData={data.scrapedData}/>,
+    <Router scrapedData={data.scrapedData !== null ? data.scrapedData : initData}/>,
     window.document.getElementById("app-container")
   );
 });

@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import logo from "../../../img/logo.png"
+import logo from "../../../img/header_logo.png"
+import smart from "../../../img/smart.png"
+import track from "../../../img/track.png"
 
 export default class HeaderMain extends Component {
     onOptionsClicked = () => {
@@ -14,7 +16,15 @@ export default class HeaderMain extends Component {
                     left: '5px',
                     top: '3px',
                 }} width="45px" height="45px"/>
-                <div className='titleMain'>Price Tracker</div>
+                <span style={{
+                    position: 'absolute',
+                    top: '15px',
+                    left: '0px',
+                    right: '0px'
+                }}>
+                    <img style={{height: '20px'}} src={smart}></img>
+                    <img style={{height: '20px'}} src={track}></img>
+                </span>
                 <button className='customIcon' style={{
                     fontSize: '24px',
                     top: '10px',
@@ -22,7 +32,7 @@ export default class HeaderMain extends Component {
                 }} onClick={this.onOptionsClicked}>
                     <i className="fas fa-cog"></i>
                 </button>
-                <hr style={{marginBottom: '15px', marginTop: '5px'}}/>
+                <hr style={{marginBottom: '15px', marginTop: '45px'}}/>
             </div>
         )
     }
