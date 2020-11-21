@@ -18,12 +18,12 @@ export default class HeaderMain extends Component {
                 }} width="45px" height="45px"/>
                 <span style={{
                     position: 'absolute',
-                    top: '15px',
+                    top: '17px',
                     left: '0px',
                     right: '0px'
                 }}>
-                    <img style={{height: '20px'}} src={smart}></img>
-                    <img style={{height: '20px'}} src={track}></img>
+                    <img style={{height: '15px'}} src={smart}></img>
+                    <img style={{height: '15px'}} src={track}></img>
                 </span>
                 <button className='customIcon' style={{
                     fontSize: '24px',

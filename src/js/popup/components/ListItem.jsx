@@ -1,6 +1,17 @@
 import React, { Component } from 'react'
 
 export default class ListItem extends Component {
+    getTitle = () => {
+        const titleArr = this.props.scrapedData.title.split(' ')
+        let title = ''
+        if (titleArr.length > 10) {
+            title = titleArr.slice(0, 10).join(' ') + ' ...'
+        } else {
+            title = titleArr.join(' ')
+        }
+        return title
+    }
+    
     render() {
         return (
             <div style={{ textAlign: 'left' }}>
@@ -13,7 +24,7 @@ export default class ListItem extends Component {
                         <img src='https://www.marketplace.org/wp-content/uploads/2019/07/Amazondotcom.png' height='17px' width='90px'/>
                         <p style={{
                             marginTop: '5px'
-                        }}>{this.props.scrapedData.title.substring(0, 80) + "..."}</p>
+                        }}>{this.getTitle()}</p>
                     </div>
                 </span>
                 <hr/>
