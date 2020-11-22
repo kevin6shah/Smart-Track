@@ -25,13 +25,20 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
 chrome.storage.local.get("scrapedData", function (data) {
-  const initData = {
-    image: 'https://www.bu.edu/bedac/files/2015/10/Photo-placeholder.jpg',
-    body: "Not Available",
-    price: "Not Available"
+  let initData = {
+    img: 'https://www.bu.edu/bedac/files/2015/10/Photo-placeholder.jpg',
+    title: "Not Available",
+    price: "Not Available",
+    url: "Not Available"
   }
+  try {
+    if (data.scrapedData.price !== '') {
+      initData = data.scrapedData
+    }
+  } catch (e) { }
+  
   render(
-    <Router scrapedData={data.scrapedData !== null ? data.scrapedData : initData}/>,
+    <Router scrapedData={initData}/>,
     window.document.getElementById("app-container")
   );
 });
