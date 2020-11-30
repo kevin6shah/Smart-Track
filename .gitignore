@@ -1,3 +1,6 @@
 node_modules
 build
 secrets.*.js
+venv
+.flaskenv
+__pycache__

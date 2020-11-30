@@ -1,6 +1,5 @@
 import React from 'react';
 import { Switch, Route} from "react-router-dom";
-import { hot } from "react-hot-loader";
 
 import Navbar from './navbar/navbar';
 import Landing from './landing/landing';
@@ -34,4 +33,4 @@ class OptionPage extends React.Component {
 
 }
 
-export default hot(module)(OptionPage)
+export default OptionPage;

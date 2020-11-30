@@ -1,5 +1,4 @@
 import React from "react";
-import { hot } from "react-hot-loader";
 
 class LoginMain extends React.Component {
   render() {
@@ -38,4 +37,4 @@ class LoginMain extends React.Component {
   }
 }
 
-export default hot(module)(LoginMain);
+export default LoginMain;
