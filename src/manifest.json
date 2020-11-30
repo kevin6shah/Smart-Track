@@ -1,24 +1,34 @@
 {
-  "name": "Price Tracker",
+  "name": "Smart Track",
   "version": "0.0.1",
   "description": "A chrome extension to track ecommerce product prices",
   "permissions": [
     "activeTab", 
     "declarativeContent", 
     "storage",
+    "tabs",
+    "<all_urls>",
     "https://*/*"
   ],
   "options_page": "options.html",
   "background": {
-    "page": "background.html"
+    "scripts": ["background.bundle.js"]
   },
   "browser_action": {
     "default_popup": "popup.html",
-    "default_icon": "logo.png"
+    "default_icon": "header_logo.png"
   },
   "icons": {
-    "128": "logo.png"
+    "16": "icon-16.png",
+    "38": "icon-38.png",
+    "128": "icon-128.png"
   },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["contentScript.bundle.js"]
+    }
+  ],
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

@@ -4,3 +4,4 @@ secrets.*.js
 venv
 .flaskenv
 __pycache__
+.DS_Store

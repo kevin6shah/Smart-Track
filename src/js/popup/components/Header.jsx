@@ -9,14 +9,13 @@ export default class Header extends Component {
     render() {
         return (
             <div id='header'>
-                <img src={logo} width="150px" height="150px"/>
-                <div className='title'>Price Tracker</div>
+                <img src={logo} width="200px" height="200px"/>
                 <button className='customIcon' style={{
                     fontSize: '24px',
                     top: '10px',
                     right: '5px',
                 }} onClick={this.onOptionsClicked}>
-                    <i class="fas fa-cog"></i>
+                    <i className="fas fa-cog"></i>
                 </button>
             </div>
         )
