@@ -3,6 +3,7 @@ import Login from './Login'
 import Register from './Register'
 import Main from './Main'
 import ResetPassword from './ResetPassword'
+import TrackedList from './TrackedList'
 
 export default class Router extends Component {
     state = {
@@ -23,6 +24,8 @@ export default class Router extends Component {
                 scrapedData={this.props.scrapedData} />
         } else if (this.state.routeTo === 'resetpwd') {
             return <ResetPassword routeTo={this.handleRoute}/>
+        } else if (this.state.routeTo === 'trackedlist') {
+            return <TrackedList routeTo={this.handleRoute}/>
         }
     }
 

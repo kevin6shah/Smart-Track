@@ -11,11 +11,13 @@ export default class HeaderMain extends Component {
     render() {
         return (
             <div>
-                <img src={logo} style={{
-                    position: "absolute",
-                    left: '5px',
-                    top: '3px',
-                }} width="45px" height="45px"/>
+                {this.props.hideLogo ? <div></div> :
+                    <img src={logo} style={{
+                        position: "absolute",
+                        left: '5px',
+                        top: '3px',
+                    }} width="45px" height="45px" />
+                }
                 <span style={{
                     position: 'absolute',
                     top: '17px',

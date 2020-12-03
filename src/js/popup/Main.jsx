@@ -99,7 +99,8 @@ export default class Main extends Component {
                 <hr style={{marginBottom: '0px'}}/>
                 <img className='graph' src={graph} />
                 <hr style={{ marginTop: '0px' }} />
-                <button className='bigButton trackedListButton'>My Tracked List</button>
+                <button className='bigButton trackedListButton'
+                onClick={this.props.routeTo.bind(this, 'trackedlist')}>My Tracked List</button>
                 <hr/>
                 <div className='footer'>
                     <button>

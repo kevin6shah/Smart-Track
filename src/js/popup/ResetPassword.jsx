@@ -46,7 +46,7 @@ export default class ResetPassword extends Component {
                     }}>
                         {this.state.errorMessage}
                     </p> : <div />}
-                <form className='loginType' onSubmit={this.onSubmit} style={{marginBottom: '220px'}}>
+                <form className='loginType' onSubmit={this.onSubmit}>
                     <input type="text" id="email" name="email" onChange={this.onChange}
                         placeholder="Email" required={true} value={this.state.email}/><br />
                     <button className='bigButton' style={{
