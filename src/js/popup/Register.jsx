@@ -3,6 +3,7 @@ import SignInForm from './components/SignInForm'
 import React, { Component } from 'react'
 import firebase from 'firebase'
 require('firebase/auth')
+require("firebase/firestore");
 
 export default class Register extends Component {
     state = {
@@ -15,11 +16,14 @@ export default class Register extends Component {
         firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((user) => {
             console.log(user.user.uid);
-            this.setState({
-                error: true,
-                errorMessage: 'Successfully signed up! Please go back to the login page.',
-                errorColor: '#4caf50',
-            })
+            firebase.firestore().collection('users').doc(user.user.uid)
+                .set({ 'trackedList': [] }).then((r) => {
+                    this.setState({
+                        error: true,
+                        errorMessage: 'Successfully signed up! Please go back to the login page.',
+                        errorColor: '#4caf50',
+                    })
+                })
         })
             .catch((error) => {
             this.setState({

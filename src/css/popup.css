@@ -64,7 +64,8 @@ hr {
 }
 
 .bigButton,
-.trackedListButton {
+.trackedListButton,
+.redButton {
   width: 300px;
   text-transform: uppercase;
   background-color: #4caf50;
@@ -86,6 +87,14 @@ hr {
 
 .trackedListButton:hover {
   background-color: #dd9000;
+}
+
+.redButton {
+  background-color: #eb0000;
+}
+
+.redButton:hover {
+  background-color: #c40000;
 }
 
 .graph {
