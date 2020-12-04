@@ -54,8 +54,8 @@ export default class Graph extends Component {
                         height: 215,
                         title: 'Price Graph',
                         margin: {
-                            l: 32,
-                            r: 0,
+                            l: 42,
+                            r: 10,
                             b: 30,
                             t: 50,
                             pad: 4,
