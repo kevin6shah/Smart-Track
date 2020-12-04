@@ -30,7 +30,7 @@ function DOMtoString(document_root) {
 function scrapeAmazonData(html) {
     var soup = new JSSoup(html)
     let price = '', title = '', img = ''
-    const priceIDs = ['priceblock_ourprice', 'priceblock_saleprice', 'priceblock_dealprice']
+    const priceIDs = ['priceblock_dealprice', 'priceblock_saleprice', 'priceblock_ourprice']
 
     for (var i = 0; i < priceIDs.length; i++) {
         const priceElement = soup.find('span', { 'id': priceIDs[i] })

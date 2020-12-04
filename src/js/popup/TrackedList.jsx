@@ -25,7 +25,7 @@ export default class TrackedList extends Component {
                         'img': item.data()['img'],
                         'title': item.data()['title'],
                         'url': item.data()['url'],
-                        'price': '$' + item.data()['priceHistory'][item.data()['priceHistory'].length - 1]
+                        'price': '$' + item.data()['priceHistory'][item.data()['priceHistory'].length - 1]['price']
                     })
                 }
                 this.setState({

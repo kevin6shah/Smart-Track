@@ -48,14 +48,21 @@ export default class Main extends Component {
                 }
 
                 const price = this.currencyToFloat(this.props.scrapedData.price.toString())
+                const myTimestamp = firebase.firestore.Timestamp.fromDate(new Date());
 
                 if (!item.exists && !this.state.isTracking) {
-                    data['priceHistory'] = [price];
+                    data['priceHistory'] = [{
+                        'price': price,
+                        'date': myTimestamp,
+                    }];
                     instance.collection('items').doc(ID).set(data)
                 } else if (item.exists && !this.state.isTracking) {
                     data['priceHistory'] = item.data()['priceHistory']
-                    if (data['priceHistory'][data['priceHistory'].length - 1] !== price) {
-                        data['priceHistory'].push(price)
+                    if (data['priceHistory'][data['priceHistory'].length - 1]['price'] !== price) {
+                        data['priceHistory'].push({
+                            'price': price,
+                            'date': myTimestamp,
+                        })
                     }
                     instance.collection('items').doc(ID).set(data)
                 }
