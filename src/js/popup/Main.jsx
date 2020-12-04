@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import HeaderMain from './components/HeaderMain'
 import ListItem from './components/ListItem'
-import graph from "../../img/SampleGraph.png"
 import firebase from 'firebase'
+import Graph from './components/Graph'
 require('firebase/auth')
 require("firebase/firestore");
 
@@ -104,7 +104,7 @@ export default class Main extends Component {
                     margin: '0px',
                 }}>{this.state.isTracking ? 'Stop Tracking' : 'Track'}</button>
                 <hr style={{marginBottom: '0px'}}/>
-                <img className='graph' src={graph} />
+                <Graph instance={this.state.instance} url={this.props.scrapedData.url}/>
                 <hr style={{ marginTop: '0px' }} />
                 <button className='bigButton trackedListButton'
                 onClick={this.props.routeTo.bind(this, 'trackedlist')}>My Tracked List</button>
