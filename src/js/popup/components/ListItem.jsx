@@ -15,6 +15,11 @@ export default class ListItem extends Component {
     render() {
         return (
             <div style={{ textAlign: 'left' }}>
+                {this.props.showButton ?
+                    <button className='closeButton'
+                        onClick={this.props.onClick.bind(this, this.props.index)}>
+                        Stop Tracking
+                        </button> : <div></div>}
                 <span className='itemContainer'>
                     <img src={this.props.scrapedData.img}
                         className='itemPic' height='100px' width='100px'/>

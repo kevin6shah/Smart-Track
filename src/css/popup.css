@@ -76,6 +76,7 @@ hr {
   text-decoration: none;
   cursor: pointer;
   outline: none;
+  transition: 0.3s;
 }
 
 .trackedListButton {
@@ -92,6 +93,7 @@ hr {
 
 .redButton {
   background-color: #eb0000;
+  transition: 0.3s;
 }
 
 .redButton:hover {
@@ -112,6 +114,7 @@ hr {
   background-color: white;
   border: none;
   outline: none;
+  transition: 0.3s;
 }
 
 .customIcon:hover {
@@ -146,6 +149,7 @@ span p {
   cursor: pointer;
   text-align: left;
   outline: none;
+  transition: 0.3s;
 }
 
 .footer button:hover {
@@ -157,4 +161,23 @@ span p {
   align-items: center;
   justify-content: start;
   height: 30px;
+  margin-bottom: 10px;
+}
+
+.closeButton {
+  position: absolute;
+  right: 10px;
+  border: none;
+  padding: 3px 10px;
+  border-radius: 50px;
+  background-color: #d8d8d8;
+  color: rgb(114, 114, 114);
+  cursor: pointer;
+  outline: none;
+  transition: 0.3s;
+}
+
+.closeButton:hover {
+  background-color: #c40000;
+  color: white;
 }
