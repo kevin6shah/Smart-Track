@@ -84,7 +84,7 @@ const scrapeTemplate = {
     ebay : {
         price: {
             tag: 'span',
-            attribute: ['id', ['prcIsum']]
+            attribute: ['id', ['prcIsum', 'mm-saleDscPrc']]
         },
         title: {
             tag: 'h1',
