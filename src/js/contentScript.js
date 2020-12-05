@@ -27,35 +27,85 @@ function DOMtoString(document_root) {
     return html;
 }
 
-function scrapeAmazonData(html) {
+function currencyToFloat(currency) {
+    return parseFloat(parseFloat(currency.
+                        replace(/[^0-9.-]+/g, "")).toFixed(2))
+}
+
+function scrapeData(html, template) {
     var soup = new JSSoup(html)
     let price = '', title = '', img = ''
-    const priceIDs = ['priceblock_dealprice', 'priceblock_saleprice', 'priceblock_ourprice']
+    const priceIDs = template['price']['attribute'][1]
 
     for (var i = 0; i < priceIDs.length; i++) {
-        const priceElement = soup.find('span', { 'id': priceIDs[i] })
+        let attributeMap = {}
+        attributeMap[template['price']['attribute'][0]] = priceIDs[i]
+        const priceElement = soup.find(template['price']['tag'], attributeMap)
         if (priceElement !== undefined) {
             price = priceElement.getText()
             break;
         }
     }
     try {
-        title = soup.find('span', { 'id': 'productTitle' }).getText().trim()
+        let attributeMap = {}
+        attributeMap[template['title']['attribute'][0]] = template['title']['attribute'][1]
+        title = soup.find(template['title']['tag'], attributeMap).getText().trim()
     } catch (e) {}
     try {
-        img = soup.find('div', { 'id': 'imgTagWrapperId' }).descendants[0].attrs.src
+        let attributeMap = {}
+        let desc = 0
+        if (template['img']['descendants'] !== undefined) desc = parseInt(template['img']['descendants'])
+        attributeMap[template['img']['attribute'][0]] = template['img']['attribute'][1]
+        img = soup.find(template['img']['tag'], attributeMap).descendants[desc].attrs.src
     } catch (e) {}
 
     return {
-        'price': price,
+        'price': currencyToFloat(price),
         'title': title,
         'img': img,
     }
 }
 
+const scrapeTemplate = {
+    amazon : {
+        price: {
+            tag: 'span',
+            attribute: ['id', ['priceblock_dealprice', 'priceblock_saleprice', 'priceblock_ourprice']]
+        },
+        title: {
+            tag: 'span',
+            attribute: ['id', 'productTitle']
+        },
+        img: {
+            tag: 'div',
+            attribute: ['id', 'imgTagWrapperId']
+        }
+    },
+    ebay : {
+        price: {
+            tag: 'span',
+            attribute: ['id', ['prcIsum']]
+        },
+        title: {
+            tag: 'h1',
+            attribute: ['id', 'itemTitle']
+        },
+        img: {
+            tag: 'div',
+            attribute: ['id', 'mainImgHldr'],
+            descendants: 2,
+        }
+    }
+}
+
 const rawHtml = DOMtoString(document)
 
-let data = scrapeAmazonData(rawHtml)
+let hostname = window.location.hostname.replace('www.', '')
+hostname = hostname.substring(0, hostname.indexOf('.'))
 
+let data = scrapeData(rawHtml, scrapeTemplate[hostname])
 data['url'] = window.location.toString()
+
+console.log(data)
+
 chrome.storage.local.set({ scrapedData: data });

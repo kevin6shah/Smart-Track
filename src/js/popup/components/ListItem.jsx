@@ -41,7 +41,7 @@ export default class ListItem extends Component {
                     <p style={{
                         fontWeight: 500,
                     }}>Current Price:</p>
-                    <p >{this.props.scrapedData.price}</p>
+                    <p >${this.props.scrapedData.price}</p>
                 </span>
                 <hr/>
             </div>

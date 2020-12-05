@@ -32,11 +32,6 @@ export default class Main extends Component {
         return stringHash(url).toString()
     }
 
-    currencyToFloat = (currency) => {
-        return parseFloat(parseFloat(currency.
-                        replace(/[^0-9.-]+/g, "")).toFixed(2))
-    }
-
     startTracking = () => {
         const ID = this.getItemID(this.props.scrapedData.url)
         const instance = this.state.instance
@@ -49,7 +44,7 @@ export default class Main extends Component {
                 'title': this.props.scrapedData.title,
             }
 
-            const price = this.currencyToFloat(this.props.scrapedData.price.toString())
+            const price = this.props.scrapedData.price
             const myTimestamp = firebase.firestore.Timestamp.fromDate(new Date());
 
             if (!item.exists && !this.state.isTracking) {
