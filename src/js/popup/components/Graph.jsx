@@ -16,17 +16,19 @@ export default class Graph extends Component {
         const ID = this.getItemID(this.props.url)
         this.props.instance.collection('items')
             .doc(ID).get().then((result) => {
-                const priceHistory = result.data()['priceHistory']
-                let x = []
-                let y = []
-                for (var i = 0; i < priceHistory.length; i++) {
-                    x.push(priceHistory[i]['date'].toDate())
-                    y.push(priceHistory[i]['price'])
+                if (result.exists) {
+                    const priceHistory = result.data()['priceHistory']
+                    let x = []
+                    let y = []
+                    for (var i = 0; i < priceHistory.length; i++) {
+                        x.push(priceHistory[i]['date'].toDate())
+                        y.push(priceHistory[i]['price'])
+                    }
+                    this.setState({
+                        x: x,
+                        y: y,
+                    })
                 }
-                this.setState({
-                    x: x,
-                    y: y,
-                })
             })
     }
 

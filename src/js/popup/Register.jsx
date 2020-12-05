@@ -14,10 +14,10 @@ export default class Register extends Component {
 
     signUpUser = (email, password) => {
         firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((user) => {
+            .then((user) => {
             console.log(user.user.uid);
             firebase.firestore().collection('users').doc(user.user.uid)
-                .set({ 'trackedList': [] }).then((r) => {
+                .set({ 'trackedList': [], 'email': user.user.email }).then((r) => {
                     this.setState({
                         error: true,
                         errorMessage: 'Successfully signed up! Please go back to the login page.',

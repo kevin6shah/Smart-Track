@@ -62,6 +62,7 @@ hr {
   border: none;
   border: 1px solid lightgray;
   font-family: "Montserrat", sans-serif;
+  outline: none;
 }
 
 .bigButton,
