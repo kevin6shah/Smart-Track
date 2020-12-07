@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import HeaderMain from './components/HeaderMain'
 import firebase from 'firebase'
 import ListItem from './components/ListItem';
+import { v4 as uuidv4 } from 'uuid';
 require("firebase/firestore");
 
 export default class TrackedList extends Component {
     state = {
-        itemList: [],
+        itemMap: {},
         instance: firebase.firestore(),
     }
 
@@ -16,22 +17,22 @@ export default class TrackedList extends Component {
         instance.collection('users')
             .doc(UID).get().then(async (result) => {
                 const trackedMap = result.data()['trackedMap']
-                let itemList = [];
+                let itemMap = {};
                 for (var ID in trackedMap) {
                     if (trackedMap.hasOwnProperty(ID)) {
                         const item = await instance.collection('items').doc(ID).get()
-                        itemList.push({
+                        itemMap[[ID]] = {
                             'id': ID,
                             'threshold': trackedMap[ID],
                             'img': item.data()['img'],
                             'title': item.data()['title'],
                             'url': item.data()['url'],
                             'price': item.data()['priceHistory'][item.data()['priceHistory'].length - 1]['price']
-                        })
+                        }
                     }
                 }
                 this.setState({
-                    itemList: itemList,
+                    itemMap: itemMap,
                 })
         })
     }
@@ -46,9 +47,12 @@ export default class TrackedList extends Component {
         const email = userSnapshot.data()['email']
         let trackedMap = userSnapshot.data()['trackedMap']
         let emailMap = itemSnapshot.data()['emailMap']
+        let itemMap = this.state.itemMap
 
         delete trackedMap[[ID]]
         delete emailMap[[email]]
+        delete itemMap[[ID]]
+
         userDocReference.update({
             trackedMap: trackedMap
         })
@@ -57,11 +61,12 @@ export default class TrackedList extends Component {
         })
 
         this.setState({
-            itemList: Object.keys(trackedMap)
+            itemMap: itemMap
         })
     }
 
     render() {
+        const itemList = Object.keys(this.state.itemMap)
         return (
             <div>
                 <HeaderMain hideLogo={true} />
@@ -74,12 +79,11 @@ export default class TrackedList extends Component {
                     <i className="fas fa-chevron-left"></i>
                 </button>
                 {
-                    this.state.itemList.length === 0 ? 
+                    itemList.length === 0 ? 
                         <div style={{fontSize: '13px', padding: '20px'}}>No Tracked Items...</div> :
-                    this.state.itemList.map((item) => <ListItem
-                        key={item.id}
-                        index={item.id}
-                        scrapedData={item} showButton={true}
+                    itemList.map((ID) => <ListItem
+                        key={uuidv4()}
+                        scrapedData={this.state.itemMap[ID]} showButton={true}
                         onClick={this.onItemClick} />)
                 }
             </div>

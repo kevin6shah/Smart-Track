@@ -22,7 +22,7 @@ export default class ListItem extends Component {
             <div style={{ textAlign: 'left' }}>
                 {this.props.showButton ?
                     <button className='closeButton'
-                        onClick={this.props.onClick.bind(this, this.props.index)}>
+                        onClick={this.props.onClick.bind(this, this.props.scrapedData.id)}>
                         Stop Tracking
                         </button> : <div></div>}
                 <span className='itemContainer'>
@@ -71,10 +71,12 @@ export default class ListItem extends Component {
                                 outline: 'none'
                             }} onClick={this.onEditClicked.bind(this, this.props.scrapedData.id)}>
                                 <i className="far fa-edit" style={{
-                                    fontSize: '12px',
                                     paddingRight: '5px'
                                 }}></i>
-                                ${this.props.scrapedData.threshold}
+                                <span style={{
+                                    fontFamily: "Montserrat",
+                                    fontSize: '14px',
+                                }}>${this.props.scrapedData.threshold}</span>
                             </button>
                         </span>
                         <hr />
