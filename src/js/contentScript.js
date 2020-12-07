@@ -35,32 +35,35 @@ function currencyToFloat(currency) {
 function scrapeData(html, template) {
     var soup = new JSSoup(html)
     let price = '', title = '', img = ''
-    const priceIDs = template['price']['attribute'][1]
 
-    for (var i = 0; i < priceIDs.length; i++) {
-        let attributeMap = {}
-        attributeMap[template['price']['attribute'][0]] = priceIDs[i]
-        const priceElement = soup.find(template['price']['tag'], attributeMap)
-        if (priceElement !== undefined) {
-            price = priceElement.getText()
-            break;
+    if (template !== undefined) {
+        const priceIDs = template['price']['attribute'][1]
+
+        for (var i = 0; i < priceIDs.length; i++) {
+            let attributeMap = {}
+            attributeMap[template['price']['attribute'][0]] = priceIDs[i]
+            const priceElement = soup.find(template['price']['tag'], attributeMap)
+            if (priceElement !== undefined) {
+                price = currencyToFloat(priceElement.getText())
+                break;
+            }
         }
+        try {
+            let attributeMap = {}
+            attributeMap[template['title']['attribute'][0]] = template['title']['attribute'][1]
+            title = soup.find(template['title']['tag'], attributeMap).getText().trim()
+        } catch (e) { }
+        try {
+            let attributeMap = {}
+            let desc = 0
+            if (template['img']['descendants'] !== undefined) desc = parseInt(template['img']['descendants'])
+            attributeMap[template['img']['attribute'][0]] = template['img']['attribute'][1]
+            img = soup.find(template['img']['tag'], attributeMap).descendants[desc].attrs.src
+        } catch (e) { }
     }
-    try {
-        let attributeMap = {}
-        attributeMap[template['title']['attribute'][0]] = template['title']['attribute'][1]
-        title = soup.find(template['title']['tag'], attributeMap).getText().trim()
-    } catch (e) {}
-    try {
-        let attributeMap = {}
-        let desc = 0
-        if (template['img']['descendants'] !== undefined) desc = parseInt(template['img']['descendants'])
-        attributeMap[template['img']['attribute'][0]] = template['img']['attribute'][1]
-        img = soup.find(template['img']['tag'], attributeMap).descendants[desc].attrs.src
-    } catch (e) {}
 
     return {
-        'price': currencyToFloat(price),
+        'price': price,
         'title': title,
         'img': img,
     }

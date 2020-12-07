@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class PriceDrop extends Component {
+export default class Threshold extends Component {
     render() {
         return (
             <div>

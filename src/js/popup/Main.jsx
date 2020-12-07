@@ -3,7 +3,7 @@ import HeaderMain from './components/HeaderMain'
 import ListItem from './components/ListItem'
 import firebase from 'firebase'
 import Graph from './components/Graph'
-import PriceDrop from './components/PriceDrop'
+import Threshold from './components/Threshold'
 require('firebase/auth')
 require("firebase/firestore");
 
@@ -158,7 +158,7 @@ export default class Main extends Component {
                 <HeaderMain />
                 <ListItem scrapedData={this.props.scrapedData} />
                 {this.state.isCollapsed ? <div></div>:
-                    <PriceDrop onChange={this.onChange} value={this.state.threshold} />}
+                    <Threshold onChange={this.onChange} value={this.state.threshold} />}
                 {this.state.error ?
                     <p style={{color:'red'}}>Please enter valid input</p>:<div />}
                 <button onClick={this.onTrackClicked}
