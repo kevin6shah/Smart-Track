@@ -12,7 +12,7 @@ class OptionsNavbar extends React.Component {
     render() {
         return (
             <Navbar collapseOnSelect expand="md" bg="dark" variant="dark" className="mainNav sticky-top px-0 py-1">
-                <Navbar.Brand className=" col-sm-3 col-md-2 mr-0 overflow-hidden">
+                <Navbar.Brand className="col-sm-3 col-md-2 mr-2 ">
                     <img
                         src={Logo}
                         width="30"
@@ -20,7 +20,7 @@ class OptionsNavbar extends React.Component {
                         className="d-inline-block align-top mr-2"
                         alt="Price Tracker Logo"
                     />
-                    <span>
+                    <span className="mr-2">
                         Price Tracker
                     </span>
 
@@ -28,22 +28,13 @@ class OptionsNavbar extends React.Component {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" className="px-3">
                     <Nav className="mr-auto">
-                        <Nav.Link to='/' className="nav-link">Products </Nav.Link>
-                        <Nav.Link to='/' className="nav-link">Stores </Nav.Link>
-                        <Nav.Link to='/' className="nav-link">History </Nav.Link>
-                        <Nav.Link to='/' className="nav-link">Profile </Nav.Link>
-
-
-                        <NavDropdown title="Dropdown" id="collapsible-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                        </NavDropdown>
+                        <Link to='/' className="nav-link">Products </Link>
+                        <Link to='/' className="nav-link">Stores </Link>
+                        <Link to='/' className="nav-link">History </Link>
                     </Nav>
 
                     <Nav>
+                        <Link to='/login' className="nav-link">Profile </Link>
                     </Nav>
 
                 </Navbar.Collapse>
