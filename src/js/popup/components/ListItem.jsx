@@ -11,6 +11,11 @@ export default class ListItem extends Component {
         }
         return title
     }
+
+    onEditClicked = (ID) => {
+        console.log(ID)
+        chrome.runtime.openOptionsPage()
+    }
     
     render() {
         return (
@@ -43,7 +48,36 @@ export default class ListItem extends Component {
                     }}>Current Price:</p>
                     <p >${this.props.scrapedData.price}</p>
                 </span>
-                <hr/>
+                <hr />
+                {this.props.scrapedData.threshold !== undefined ?
+                    <div>
+                        <span style={{
+                            fontSize: '14px',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            color: '#4caf50'
+                        }}>
+                            <p style={{
+                                fontWeight: 500,
+                            }}>Threshold Value:</p>
+                            <button style={{
+                                color: '#4caf50',
+                                fontWeight: 500,
+                                cursor: 'pointer',
+                                backgroundColor: 'white',
+                                border: 'none',
+                                outline: 'none'
+                            }} onClick={this.onEditClicked.bind(this, this.props.scrapedData.id)}>
+                                <i className="far fa-edit" style={{
+                                    fontSize: '12px',
+                                    paddingRight: '5px'
+                                }}></i>
+                                ${this.props.scrapedData.threshold}
+                            </button>
+                        </span>
+                        <hr />
+                </div>
+                : <div/>}
             </div>
         )
     }

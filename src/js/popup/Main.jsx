@@ -11,7 +11,7 @@ export default class Main extends Component {
     state = {
         isTracking: false,
         instance: firebase.firestore(),
-        priceDrop: '',
+        threshold: '',
         isCollapsed: true,
         error: false,
     }
@@ -21,7 +21,7 @@ export default class Main extends Component {
         this.state.instance.collection('users')
             .doc(UID).get().then((result) => {
                 this.setState({
-                    isTracking: result.data()['trackedList']
+                    isTracking: Object.keys(result.data()['trackedMap'])
                         .includes(this.getItemID(this.props.scrapedData.url))
                 })
             })
@@ -32,12 +32,22 @@ export default class Main extends Component {
         return stringHash(url).toString()
     }
 
-    startTracking = () => {
-        const ID = this.getItemID(this.props.scrapedData.url)
-        const instance = this.state.instance
-        instance.collection('items').doc(ID).get().then((item) => {
-            const UID = localStorage.getItem('uid').toString()
+    currencyToFloat = (currency) => {
+        return parseFloat(parseFloat(currency.
+                            replace(/[^0-9.-]+/g, "")).toFixed(2))
+    }
 
+    startTracking = async () => {
+        const ID = this.getItemID(this.props.scrapedData.url)
+        const UID = localStorage.getItem('uid').toString()
+        const instance = this.state.instance
+        const userDocReference = instance.collection('users').doc(UID)
+        const itemDocReference = instance.collection('items').doc(ID)
+        const userSnapshot = await userDocReference.get()
+        const email = userSnapshot.data()['email']
+        const threshold = this.currencyToFloat(this.state.threshold)
+
+        itemDocReference.get().then((item) => {
             let data = {
                 'img': this.props.scrapedData.img,
                 'url': this.props.scrapedData.url,
@@ -52,25 +62,38 @@ export default class Main extends Component {
                     'price': price,
                     'date': myTimestamp,
                 }];
-                instance.collection('items').doc(ID).set(data)
+                data['emailMap'] = {
+                    [email]: threshold,
+                }
+                itemDocReference.set(data)
             } else if (item.exists && !this.state.isTracking) {
                 data['priceHistory'] = item.data()['priceHistory']
+                data['emailMap'] = item.data()['emailMap']
                 if (data['priceHistory'][data['priceHistory'].length - 1]['price'] !== price) {
                     data['priceHistory'].push({
                         'price': price,
                         'date': myTimestamp,
                     })
                 }
-                instance.collection('items').doc(ID).set(data)
+                data['emailMap'][[email]] = threshold
+                itemDocReference.set(data)
             }
 
             if (!this.state.isTracking) {
-                instance.collection('users').doc(UID).update({
-                    trackedList: firebase.firestore.FieldValue.arrayUnion(ID)
+                userDocReference.update({
+                    [`trackedMap.${ID}`]: 
+                    threshold
                 })
             } else {
-                instance.collection('users').doc(UID).update({
-                    trackedList: firebase.firestore.FieldValue.arrayRemove(ID)
+                let trackedMap = userSnapshot.data()['trackedMap']
+                let emailMap = item.data()['emailMap']
+                delete trackedMap[[ID]]
+                delete emailMap[[email]]
+                userDocReference.update({
+                    trackedMap: trackedMap
+                })
+                itemDocReference.update({
+                    emailMap: emailMap
                 })
             }
 
@@ -83,10 +106,11 @@ export default class Main extends Component {
     }
 
     checkInput = () => {
-        if (!isNaN(this.state.priceDrop) &&
-            this.state.priceDrop !== null &&
-            this.state.priceDrop !== '' &&
-            this.state.priceDrop > 0) return true;
+        if (!isNaN(this.state.threshold) &&
+            this.state.threshold !== null &&
+            this.state.threshold !== '' &&
+            this.state.threshold > 0 && 
+            parseFloat(this.state.threshold) < this.props.scrapedData.price) return true;
         else return false;
     }
 
@@ -124,7 +148,7 @@ export default class Main extends Component {
 
     onChange = (e) => {
         this.setState({
-            priceDrop: e.target.value,
+            threshold: e.target.value,
         })
     }
 
@@ -134,7 +158,7 @@ export default class Main extends Component {
                 <HeaderMain />
                 <ListItem scrapedData={this.props.scrapedData} />
                 {this.state.isCollapsed ? <div></div>:
-                    <PriceDrop onChange={this.onChange} value={this.state.priceDrop} />}
+                    <PriceDrop onChange={this.onChange} value={this.state.threshold} />}
                 {this.state.error ?
                     <p style={{color:'red'}}>Please enter valid input</p>:<div />}
                 <button onClick={this.onTrackClicked}
