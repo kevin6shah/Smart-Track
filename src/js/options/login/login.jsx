@@ -1,8 +1,9 @@
 import React from "react";
-import firebase from 'firebase'
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
-import './login.css';
 import SubmitButton from '../submitButton/submitButton';
+import './login.css';
 
 class LoginMain extends React.Component {
 
@@ -26,10 +27,16 @@ class LoginMain extends React.Component {
         this.setState({ fetchState: 'loading' });
         firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
             .then((user) => {
-                console.log('user', user.user.uid);
+                console.log('user', user, user.user.uid);
                 localStorage.setItem('uid', user.user.uid);
                 this.setState({ fetchState: 'success' });
 
+                let role = user.user.role;
+                if (!user.role) role = 'basic'
+
+                this.props.onLoginStateChange(user.user.email, role, user.user.uid);
+
+                // //if we want to route back to previous page
                 // let history = this.props.history;
                 // let location = this.props.location;
                 // let { from } = location.state || { from: { pathname: "/" } };

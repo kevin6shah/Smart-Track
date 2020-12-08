@@ -16,6 +16,8 @@ class LandingPage extends React.Component {
                     <div className="jumbotron">
                         <h3 className="display-4">Price Tracker</h3>
                         <p className="lead">
+                            Welcome {this.props.profile.username}
+                            <br></br>
                             Start the workflow by clicking a link up top or selecting a
                             product.
                         </p>

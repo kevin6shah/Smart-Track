@@ -34,7 +34,7 @@ class OptionsNavbar extends React.Component {
                     </Nav>
 
                     <Nav>
-                        <Link to='/login' className="nav-link">Profile </Link>
+                        <Link to='/profile' className="nav-link">Profile </Link>
                     </Nav>
 
                 </Navbar.Collapse>
