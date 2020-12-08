@@ -32,34 +32,64 @@ function currencyToFloat(currency) {
                         replace(/[^0-9.-]+/g, "")).toFixed(2))
 }
 
+function cartesian(...args) {
+    var r = [], max = args.length-1;
+    function helper(arr, i) {
+        for (var j=0, l=args[i].length; j<l; j++) {
+            var a = arr.slice(0); // clone arr
+            a.push(args[i][j]);
+            if (i==max)
+                r.push(a);
+            else
+                helper(a, i+1);
+        }
+    }
+    helper([], 0);
+    return r;
+}
+
+function scrapeItem(template, soup, itemType) {
+    const scrapingAttributes = template[itemType]['attributes']
+    let attributeArrays = []
+
+    for (const attr in scrapingAttributes) {
+        attributeArrays.push(scrapingAttributes[attr])
+    }
+
+    try {
+        attributeArrays = cartesian(...attributeArrays)
+
+        for (var i = 0; i < attributeArrays.length; i++) {
+            let attributeMap = {}
+            let j = 0
+            for (const attr in scrapingAttributes) {
+                attributeMap[[attr]] = attributeArrays[i][j]
+                j = j + 1
+            }
+            const scrapingElement = soup.find(template[itemType]['tag'], attributeMap)
+            if (scrapingElement !== undefined) {
+                if (itemType === 'price') {
+                    return currencyToFloat(scrapingElement.getText().trim())
+                } else if (itemType === 'title') {
+                    return scrapingElement.getText().trim()
+                } else if (itemType === 'img') {
+                    return scrapingElement.descendants[0].attrs.src
+                }
+            }
+        }
+    } catch (e) {}
+
+    return ''
+}
+
 function scrapeData(html, template) {
     var soup = new JSSoup(html)
     let price = '', title = '', img = ''
 
     if (template !== undefined) {
-        const priceIDs = template['price']['attribute'][1]
-
-        for (var i = 0; i < priceIDs.length; i++) {
-            let attributeMap = {}
-            attributeMap[template['price']['attribute'][0]] = priceIDs[i]
-            const priceElement = soup.find(template['price']['tag'], attributeMap)
-            if (priceElement !== undefined) {
-                price = currencyToFloat(priceElement.getText())
-                break;
-            }
-        }
-        try {
-            let attributeMap = {}
-            attributeMap[template['title']['attribute'][0]] = template['title']['attribute'][1]
-            title = soup.find(template['title']['tag'], attributeMap).getText().trim()
-        } catch (e) { }
-        try {
-            let attributeMap = {}
-            let desc = 0
-            if (template['img']['descendants'] !== undefined) desc = parseInt(template['img']['descendants'])
-            attributeMap[template['img']['attribute'][0]] = template['img']['attribute'][1]
-            img = soup.find(template['img']['tag'], attributeMap).descendants[desc].attrs.src
-        } catch (e) { }
+        price = scrapeItem(template, soup, 'price')
+        title = scrapeItem(template, soup, 'title')
+        img = scrapeItem(template, soup, 'img')
     }
 
     return {
@@ -69,90 +99,146 @@ function scrapeData(html, template) {
     }
 }
 
+function getTemplateSelector(html) {
+    var soup = new JSSoup(html)
+    const doc = document.getElementsByTagName('body')[0]
+    var MOUSE_VISITED_CLASSNAME = 'crx_mouse_visited';
+    var prevDOM = null;
+    let template = {}
+
+    function hover(e) {
+        var srcElement = e.srcElement;
+        if (prevDOM != null) {
+            prevDOM.classList.remove(MOUSE_VISITED_CLASSNAME);
+        }
+        srcElement.classList.add(MOUSE_VISITED_CLASSNAME);
+        prevDOM = srcElement;
+    }
+
+    function onClickPrice(e) {
+        doc.removeEventListener("mousemove", hover)
+        doc.removeEventListener("click", onClickPrice)
+        prevDOM.classList.remove(MOUSE_VISITED_CLASSNAME);
+        const tag = e.target.tagName.toLowerCase()
+        const attributes = e.target.attributes
+        let attrMap = {}
+
+        for (var i = 0; i < attributes.length; i++) {
+            attrMap[[attributes[i].nodeName]] = [attributes[i].nodeValue]
+        }
+
+        const element = {
+            tag: tag,
+            attributes: attrMap
+        }
+
+        const price = scrapeItem({price: element}, soup, 'price')
+
+        if (confirm("Is this price correct?: " + price)) {
+            template['price'] = element
+            console.log(template)
+            alert("SUCCESS!")
+            // alert("Please select product image")
+            // doc.addEventListener("click", onClickPrice)
+            // doc.addEventListener("mousemove", hover)
+        } else {
+            if (confirm("Would you like to try again?")) {
+                doc.addEventListener("click", onClickPrice)
+                doc.addEventListener("mousemove", hover)
+            }
+        }
+    }
+
+    function onClickTitle(e) {
+        doc.removeEventListener("mousemove", hover)
+        doc.removeEventListener("click", onClickTitle)
+        prevDOM.classList.remove(MOUSE_VISITED_CLASSNAME);
+        const tag = e.target.tagName.toLowerCase()
+        const attributes = e.target.attributes
+        let attrMap = {}
+
+        for (var i = 0; i < attributes.length; i++) {
+            attrMap[[attributes[i].nodeName]] = [attributes[i].nodeValue]
+        }
+
+        const element = {
+            tag: tag,
+            attributes: attrMap
+        }
+
+        const title = scrapeItem({title: element}, soup, 'title')
+
+        if (confirm("Is this title correct?: " + title)) {
+            template['title'] = element
+            alert("Please select product price")
+            doc.addEventListener("click", onClickPrice)
+            doc.addEventListener("mousemove", hover)
+        } else {
+            if (confirm("Would you like to try again?")) {
+                doc.addEventListener("click", onClickTitle)
+                doc.addEventListener("mousemove", hover)
+            }
+        }
+    }
+
+    alert("Please select product title")
+    doc.addEventListener("click", onClickTitle)
+    doc.addEventListener("mousemove", hover)
+}
+
+// chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
+//     if (request.greeting == "startSelector") {
+//         getTemplateSelector()
+//     }
+// })
+
 const scrapeTemplate = {
     amazon : {
         price: {
             tag: 'span',
-            attribute: ['id', ['priceblock_dealprice', 'priceblock_saleprice', 'priceblock_ourprice']]
+            attributes: {
+                id: ['priceblock_dealprice', 'priceblock_saleprice', 'priceblock_ourprice'],
+                class: ['a-size-large product-title-word-break']
+            }
         },
         title: {
             tag: 'span',
-            attribute: ['id', 'productTitle']
+            attributes: {
+                id: ['productTitle']
+            }
         },
         img: {
             tag: 'div',
-            attribute: ['id', 'imgTagWrapperId']
+            attributes: {
+                id: ['imgTagWrapperId']
+            }
         }
     },
     ebay : {
         price: {
             tag: 'span',
-            attribute: ['id', ['prcIsum', 'mm-saleDscPrc']]
+            attributes: {
+                id: ['prcIsum', 'mm-saleDscPrc']
+            }
         },
         title: {
             tag: 'h1',
-            attribute: ['id', 'itemTitle']
+            attributes: {
+                id: ['itemTitle']
+            }
         },
         img: {
             tag: 'div',
-            attribute: ['id', 'mainImgHldr'],
-            descendants: 2,
+            attributes: {
+                id: ['mainImgHldr']
+            }
         }
     }
 }
-
-function getTemplateSelector(){
-    //do nothing
-    //alert('Click on the Title');
-    let title = {}
-    let price = {}
-    var clickcount = 0;
-    let tag, attribute = ''
-    function clickHandler(e){
-        clickcount++;
-        if (clickcount == 1){
-            tag = e.target.getAttribute("id")
-            attribute = e.target.tagName
-            if (confirm(`Tag is ${tag} and attribute is ${attribute} for title`)){
-                //valid tag and attribute for price
-                title['tag'] = tag;
-                title['attribute'] = attribute;
-                alert('Select the Price');
-            }
-            else{
-                clickcount = 0;
-                alert('Reselect Title');
-            }
-        }
-        if (clickcount == 2 ){
-            tag = e.target.getAttribute("id")
-            attribute = e.target.tagName
-            if (confirm(`Tag is ${tag} and attribute is ${attribute} for price`)){
-                //valid tag and attribute for price
-                price['tag'] = tag;
-                price['attribute'] = attribute;
-                clickcount = -2;
-            }
-            else{
-                clickcount = 1;
-                alert('Reselect Title')
-            }
-
-        }
-        if (clickcount == -1){
-            document.getElementsByTagName('body')[0].removeEventListener('click', clickHandler)
-        }
-    }
-    alert("Select Title")
-    document.getElementsByTagName('body')[0].addEventListener('click', clickHandler)
-    
-
-}
-
-
-//getTemplateSelector();
 
 const rawHtml = DOMtoString(document)
+
+getTemplateSelector(rawHtml)
 
 let hostname = window.location.hostname.replace('www.', '')
 hostname = hostname.substring(0, hostname.indexOf('.'))

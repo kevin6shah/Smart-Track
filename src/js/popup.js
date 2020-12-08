@@ -1,4 +1,3 @@
-import "../css/popup.css";
 import React from "react";
 import Router from "./popup/Router"
 import { render } from "react-dom";
@@ -24,7 +23,7 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
-chrome.storage.local.get("scrapedData", function (data) {
+chrome.storage.local.get(["scrapedData", "test"], function (data) {
   let initData = {
     img: 'https://www.bu.edu/bedac/files/2015/10/Photo-placeholder.jpg',
     title: "Not Available",
@@ -36,6 +35,13 @@ chrome.storage.local.get("scrapedData", function (data) {
       initData = data.scrapedData
     }
   } catch (e) { }
+
+  // if (data.test !== undefined) {
+  //   alert(data.test)
+  //   chrome.storage.local.remove('test')
+  // } else {
+  //   alert("DIDNT WORK")
+  // }
   
   render(
     <Router scrapedData={initData}/>,

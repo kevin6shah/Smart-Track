@@ -84,6 +84,13 @@ var options = {
         ]
       }
     ),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "src/css/hover.css",
+        },
+      ],
+    }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "popup.html"),
       filename: "popup.html",

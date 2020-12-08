@@ -133,6 +133,11 @@ export default class Main extends Component {
                     }
                 }
             }
+        } else {
+            chrome.tabs.getSelected(null, function (tab) {
+                window.close()
+                chrome.tabs.sendRequest(tab.id, { greeting: "startSelector" });
+            });
         }
     }
 
