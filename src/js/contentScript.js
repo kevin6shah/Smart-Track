@@ -138,9 +138,6 @@ function getTemplateSelector(html) {
             template['price'] = element
             console.log(template)
             alert("SUCCESS!")
-            // alert("Please select product image")
-            // doc.addEventListener("click", onClickPrice)
-            // doc.addEventListener("mousemove", hover)
         } else {
             if (confirm("Would you like to try again?")) {
                 doc.addEventListener("click", onClickPrice)
@@ -185,12 +182,6 @@ function getTemplateSelector(html) {
     doc.addEventListener("click", onClickTitle)
     doc.addEventListener("mousemove", hover)
 }
-
-// chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
-//     if (request.greeting == "startSelector") {
-//         getTemplateSelector()
-//     }
-// })
 
 const scrapeTemplate = {
     amazon : {
@@ -238,7 +229,11 @@ const scrapeTemplate = {
 
 const rawHtml = DOMtoString(document)
 
-getTemplateSelector(rawHtml)
+chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
+    if (request.greeting == "startSelector") {
+        getTemplateSelector(rawHtml)
+    }
+})
 
 let hostname = window.location.hostname.replace('www.', '')
 hostname = hostname.substring(0, hostname.indexOf('.'))

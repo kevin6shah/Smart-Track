@@ -1,3 +1,4 @@
+import '../css/popup.css'
 import React from "react";
 import Router from "./popup/Router"
 import { render } from "react-dom";

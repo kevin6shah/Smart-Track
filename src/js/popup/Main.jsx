@@ -135,8 +135,10 @@ export default class Main extends Component {
             }
         } else {
             chrome.tabs.getSelected(null, function (tab) {
-                window.close()
-                chrome.tabs.sendRequest(tab.id, { greeting: "startSelector" });
+                if (confirm("Unfortunately, there are no tracking templates for this item. But, you can help us make one. Would you like to continue?")) {
+                    window.close()
+                    chrome.tabs.sendRequest(tab.id, { greeting: "startSelector" });
+                }
             });
         }
     }
