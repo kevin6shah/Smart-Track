@@ -101,6 +101,57 @@ const scrapeTemplate = {
     }
 }
 
+function getTemplateSelector(){
+    //do nothing
+    //alert('Click on the Title');
+    let title = {}
+    let price = {}
+    var clickcount = 0;
+    let tag, attribute = ''
+    function clickHandler(e){
+        clickcount++;
+        if (clickcount == 1){
+            tag = e.target.getAttribute("id")
+            attribute = e.target.tagName
+            if (confirm(`Tag is ${tag} and attribute is ${attribute} for title`)){
+                //valid tag and attribute for price
+                title['tag'] = tag;
+                title['attribute'] = attribute;
+                alert('Select the Price');
+            }
+            else{
+                clickcount = 0;
+                alert('Reselect Title');
+            }
+        }
+        if (clickcount == 2 ){
+            tag = e.target.getAttribute("id")
+            attribute = e.target.tagName
+            if (confirm(`Tag is ${tag} and attribute is ${attribute} for price`)){
+                //valid tag and attribute for price
+                price['tag'] = tag;
+                price['attribute'] = attribute;
+                clickcount = -2;
+            }
+            else{
+                clickcount = 1;
+                alert('Reselect Title')
+            }
+
+        }
+        if (clickcount == -1){
+            document.getElementsByTagName('body')[0].removeEventListener('click', clickHandler)
+        }
+    }
+    alert("Select Title")
+    document.getElementsByTagName('body')[0].addEventListener('click', clickHandler)
+    
+
+}
+
+
+//getTemplateSelector();
+
 const rawHtml = DOMtoString(document)
 
 let hostname = window.location.hostname.replace('www.', '')
