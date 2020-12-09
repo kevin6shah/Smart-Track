@@ -183,50 +183,6 @@ function getTemplateSelector(html) {
     doc.addEventListener("mousemove", hover)
 }
 
-const scrapeTemplate = {
-    amazon : {
-        price: {
-            tag: 'span',
-            attributes: {
-                id: ['priceblock_dealprice', 'priceblock_saleprice', 'priceblock_ourprice'],
-                class: ['a-size-large product-title-word-break']
-            }
-        },
-        title: {
-            tag: 'span',
-            attributes: {
-                id: ['productTitle']
-            }
-        },
-        img: {
-            tag: 'div',
-            attributes: {
-                id: ['imgTagWrapperId']
-            }
-        }
-    },
-    ebay : {
-        price: {
-            tag: 'span',
-            attributes: {
-                id: ['prcIsum', 'mm-saleDscPrc']
-            }
-        },
-        title: {
-            tag: 'h1',
-            attributes: {
-                id: ['itemTitle']
-            }
-        },
-        img: {
-            tag: 'div',
-            attributes: {
-                id: ['mainImgHldr']
-            }
-        }
-    }
-}
-
 const rawHtml = DOMtoString(document)
 
 chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
@@ -235,12 +191,13 @@ chrome.extension.onRequest.addListener(function (request, sender, sendResponse) 
     }
 })
 
-let hostname = window.location.hostname.replace('www.', '')
-hostname = hostname.substring(0, hostname.indexOf('.'))
-
-let data = scrapeData(rawHtml, scrapeTemplate[hostname])
-data['url'] = window.location.toString()
-
-console.log(data)
-
-chrome.storage.local.set({ scrapedData: data });
+chrome.storage.sync.get('templates', function(backgroundData) {
+    const scrapeTemplate = backgroundData.templates
+    console.log(scrapeTemplate)
+    let hostname = window.location.hostname.replace('www.', '')
+    hostname = hostname.substring(0, hostname.indexOf('.'))
+    let data = scrapeData(rawHtml, scrapeTemplate[hostname])
+    data['url'] = window.location.toString()
+    console.log(data)
+    chrome.storage.sync.set({ scrapedData: data });
+});
