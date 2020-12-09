@@ -21,13 +21,6 @@ export default class ListItem extends Component {
         let hostname = new URL(this.props.scrapedData.url).hostname.replace('www.', '')
         hostname = hostname.substring(0, hostname.indexOf('.'))
 
-        let logoMap = {
-            amazon: 'https://www.marketplace.org/wp-content/uploads/2019/07/Amazondotcom.png',
-            ebay: 'https://i.ibb.co/MGy8PRf/new-ebay-logo1.png',
-        }
-        
-        console.log(hostname)
-
         return (
             <div style={{ textAlign: 'left' }}>
                 {this.props.showButton ?
@@ -39,13 +32,15 @@ export default class ListItem extends Component {
                     <img src={this.props.scrapedData.img}
                         className='itemPic' height='100px' width='100px'/>
                     <div style={{
-                        padding: '5px',
+                        padding: '7px',
                     }}>
-                        {logoMap[[hostname]] !== undefined ?
-                            <img src={logoMap[[hostname]]} height='17px' width='90px' /> : <div/>}
                         <p style={{
-                            marginTop: (logoMap[[hostname]] !== undefined) ? '5px' : '0px'
-                        }}>{this.getTitle()}</p>
+                            fontSize: '16px',
+                            fontWeight: '500',
+                            paddingBottom: '5px',
+                            textTransform: 'capitalize',
+                        }}>{hostname}</p>
+                        <p>{this.getTitle()}</p>
                     </div>
                 </span>
                 <hr/>
