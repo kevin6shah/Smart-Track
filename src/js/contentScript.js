@@ -131,7 +131,6 @@ function getTemplateSelector(html) {
     function sendToFirestore() {
         initializeFirebase()
         let db = firebase.firestore()
-        let templates = {}
 
         db.collection("templates")
             .doc(hostname).get().then((snapshot) => {
@@ -149,7 +148,30 @@ function getTemplateSelector(html) {
                         });
                     })
                 } else {
-                    console.log("EXISTS")
+                    let fbTemplate = snapshot.data()
+                    for (const key in fbTemplate) {
+                        if (template[key] !== undefined) {
+                            for (const attr in fbTemplate[key]['attributes']) {
+                                if (fbTemplate[key]['attributes'][attr].
+                                    includes(template[key]['attributes'][attr][0]) !== true) {
+                                    fbTemplate[key]['attributes'][attr].
+                                        push(template[key]['attributes'][attr][0])
+                                    }
+                            }
+                        }
+                    }
+                    db.collection('templates').doc(hostname).set(fbTemplate).then(() => {
+                        chrome.runtime.sendMessage({ message: "fetchData" }, function (response) {
+                            if (response && response.status === 'success') {
+                                let data = scrapeData(rawHtml, fbTemplate)
+                                data['url'] = window.location.toString()
+                                chrome.storage.sync.set({ scrapedData: data });
+                                alert("Template creation was successful, please open the Smart Track extension and track the desired product")
+                            } else {
+                                alert("Template creation was not successful. Please try again later")
+                            }
+                        });
+                    })
                 }
             })
     }
