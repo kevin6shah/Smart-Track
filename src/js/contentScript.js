@@ -95,7 +95,9 @@ function scrapeItem(template, soup, itemType, getElement) {
                 } else if (itemType === 'img') {
                     if (getElement && getElement === true) {
                         return scrapingElement.findAll('img')[0]
-                    } else return scrapingElement.attrs.src
+                    } else if (template[itemType]['tag'] === 'img') {
+                        return scrapingElement.attrs.src
+                    } else return scrapingElement.findAll('img')[0].attrs.src
                 }
             }
         }
