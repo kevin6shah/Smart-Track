@@ -2,12 +2,14 @@ import React from 'react';
 import { Switch, Route } from "react-router-dom";
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
 
 import ProtectedRoute from './protectedRoute/protectedRoute';
 import Navbar from './navbar/navbar';
 import Landing from './landing/landing';
 import Login from './login/login';
 import Profile from './profile/profile';
+import Templates from './templates/templates';
 
 class OptionPage extends React.Component {
     constructor(props) {
@@ -43,25 +45,39 @@ class OptionPage extends React.Component {
             appId: "1:1037701953092:web:221a8548a2dcfd13186e11",
             measurementId: "G-Q7JZX1QQ9V"
         };
-        firebase.initializeApp(firebaseConfig);
 
-        firebase.auth().onAuthStateChanged((user) => {
+        firebase.initializeApp(firebaseConfig);
+        let db = firebase.firestore();
+
+        firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                if (user.role) {
-                    this.loginStateChange(user.email, user.role, user.uid);
-                } else {
-                    this.loginStateChange(user.email, 'basic', user.uid);
-                }
-                console.log('logged in ', user.email, user.role, user.uid);
+                //get their role
+                db.collection('users').doc(user.uid)
+                    .get()
+                    .then(doc => {
+                        let data = doc.data();
+                        let role = data.role;
+                        if (!role) {
+                            role = 'basic';
+                        }
+                        this.loginStateChange(user.email, role, user.uid);
+                        console.log('logged in ', user.email, role, user.uid);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            } else {
+                // not logged in default behavior
             }
         });
-
     }
 
     render() {
         return (
             <div className="App">
-                <Navbar />
+                <Navbar 
+                    profile={this.state.profile}
+                />
                 <Switch>
                     <Route path="/login" >
                         <Login
@@ -69,14 +85,25 @@ class OptionPage extends React.Component {
                         />
                     </Route>
 
+                    <Route path="/templates" >
+                        <ProtectedRoute
+                            path="/templates"
+                            profile={this.state.profile}>
+                            <Templates />
+                        </ProtectedRoute>
+                    </Route>
+
                     <Route path="/profile" >
                         <ProtectedRoute
                             path="/profile"
-                            onLoginStateChange={this.loginStateChange}
                             profile={this.state.profile}>
-                            <Profile />
+                            {/* FUKCING NONSENSE THAT I HAVE TO COPY
+                                THE FUCKIN GPROPS ITS SUPPOSED TO PASS THROUGH */}
+                            <Profile
+                                onLoginStateChange={this.loginStateChange}
+                                profile={this.state.profile}
+                            />
                         </ProtectedRoute>
-
                     </Route>
 
                     <Route exact path="/">
@@ -86,7 +113,9 @@ class OptionPage extends React.Component {
                     </Route>
 
                     <Route path="*">
-                        <Landing />
+                        <Landing
+                            profile={this.state.profile}
+                        />
                     </Route>
 
                 </Switch>

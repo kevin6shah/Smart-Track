@@ -3,12 +3,11 @@ import React from "react";
 class LandingPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            fetchState: "idle",
-        };
     }
 
     render() {
+        let username = this.props.profile.username;
+        if (!username) username = 'UNDEFINED';
         return (
             <div className="container mt-4 w-75">
                 <header className="app-header">
@@ -16,7 +15,7 @@ class LandingPage extends React.Component {
                     <div className="jumbotron">
                         <h3 className="display-4">Price Tracker</h3>
                         <p className="lead">
-                            Welcome {this.props.profile.username}
+                            Welcome {username}
                             <br></br>
                             Start the workflow by clicking a link up top or selecting a
                             product.

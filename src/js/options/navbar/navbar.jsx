@@ -3,13 +3,28 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from 'react-router-dom';
-import { hot } from "react-hot-loader";
 
 import Logo from '../../../img/logo.png';
 
 class OptionsNavbar extends React.Component {
 
     render() {
+        let links = <>
+            <Link to='/' className="nav-link">Home </Link>
+        </>;
+        if (this.props.profile.role === "basic") {
+            links = <>
+                <Link to='/products' className="nav-link">Products </Link>
+                <Link to='/' className="nav-link">Stores </Link>
+                <Link to='/' className="nav-link">History </Link>
+            </>;
+        } else if (this.props.profile.role === "admin") {
+            links = <>
+                <Link to='/templates' className="nav-link">Templates </Link>
+
+            </>;
+        }
+
         return (
             <Navbar collapseOnSelect expand="md" bg="dark" variant="dark" className="mainNav sticky-top px-0 py-1">
                 <Navbar.Brand className="col-sm-3 col-md-2 mr-2 ">
@@ -28,15 +43,13 @@ class OptionsNavbar extends React.Component {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" className="px-3">
                     <Nav className="mr-auto">
-                        <Link to='/' className="nav-link">Products </Link>
-                        <Link to='/' className="nav-link">Stores </Link>
-                        <Link to='/' className="nav-link">History </Link>
+                        {links}
+
                     </Nav>
 
                     <Nav>
                         <Link to='/profile' className="nav-link">Profile </Link>
                     </Nav>
-
                 </Navbar.Collapse>
 
 
@@ -46,4 +59,4 @@ class OptionsNavbar extends React.Component {
 
 }
 
-export default hot(module)(OptionsNavbar)
+export default OptionsNavbar;
