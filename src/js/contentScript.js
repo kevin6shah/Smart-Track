@@ -68,7 +68,7 @@ function cartesian(...args) {
     return r;
 }
 
-function scrapeItem(template, soup, itemType) {
+function scrapeItem(template, soup, itemType, getElement) {
     try {
         const scrapingAttributes = template[itemType]['attributes']
         let attributeArrays = []
@@ -93,7 +93,9 @@ function scrapeItem(template, soup, itemType) {
                 } else if (itemType === 'title') {
                     return scrapingElement.getText().trim()
                 } else if (itemType === 'img') {
-                    return scrapingElement.descendants[0].attrs.src
+                    if (getElement && getElement === true) {
+                        return scrapingElement.findAll('img')[0]
+                    } else return scrapingElement.attrs.src
                 }
             }
         }
@@ -211,6 +213,91 @@ function getTemplateSelector(html) {
         return attrMap
     }
 
+    function onClickImage(e) {
+        doc.removeEventListener("mousemove", hover)
+        doc.removeEventListener("click", onClickImage)
+        prevDOM.classList.remove(MOUSE_VISITED_CLASSNAME);
+
+        const tag = e.target.tagName.toLowerCase()
+        const attributes = e.target.attributes
+
+        let attrMap = generateAttributesMap(attributes, 'image')
+
+        let element = {
+            tag: tag,
+            attributes: attrMap
+        }
+
+        delete element['attributes']['src']
+
+        if (attrMap['id'] !== undefined) {
+            element = {
+                tag: tag,
+                attributes: {
+                    id: attrMap['id']
+                }
+            }
+        } else if (attrMap['class'] !== undefined) {
+            element = {
+                tag: tag,
+                attributes: {
+                    class: attrMap['class']
+                }
+            }
+        }
+
+        const emt = scrapeItem({ img: element }, soup, 'img', true)
+
+        try {
+            const src = emt.attrs.src
+
+            attrMap = emt.attrs
+
+            element = {
+                tag: 'img',
+                attributes: attrMap
+            }
+
+            delete element['attributes']['src']
+            delete element['attributes']['alt']
+
+            if (attrMap['id'] !== undefined) {
+                element = {
+                    tag: 'img',
+                    attributes: {
+                        id: attrMap['id']
+                    }
+                }
+            } else if (attrMap['class'] !== undefined) {
+                element = {
+                    tag: 'img',
+                    attributes: {
+                        class: attrMap['class']
+                    }
+                }
+            }
+
+            if (confirm("Is this image link correct?: " + src)) {
+                template['img'] = element
+                sendToFirestore()
+            } else {
+                if (confirm("Would you like to try again? (Optional)")) {
+                    doc.addEventListener("click", onClickImage)
+                    doc.addEventListener("mousemove", hover)
+                } else {
+                    sendToFirestore()
+                }
+            }
+        } catch (e) {
+            if (confirm("This element could not be selected. Do you want to try again? (Optional)")) {
+                doc.addEventListener("click", onClickImage)
+                doc.addEventListener("mousemove", hover)
+            } else {
+                sendToFirestore()
+            }
+        }
+    }
+
     function onClickPrice(e) {
         doc.removeEventListener("mousemove", hover)
         doc.removeEventListener("click", onClickPrice)
@@ -245,7 +332,9 @@ function getTemplateSelector(html) {
 
         if (confirm("Is this price correct?: " + price)) {
             template['price'] = element
-            sendToFirestore()
+            alert("Please select product image")
+            doc.addEventListener("click", onClickImage)
+            doc.addEventListener("mousemove", hover)
         } else {
             if (confirm("Would you like to try again?")) {
                 doc.addEventListener("click", onClickPrice)
