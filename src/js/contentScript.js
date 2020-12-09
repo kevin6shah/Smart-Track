@@ -49,14 +49,14 @@ function cartesian(...args) {
 }
 
 function scrapeItem(template, soup, itemType) {
-    const scrapingAttributes = template[itemType]['attributes']
-    let attributeArrays = []
-
-    for (const attr in scrapingAttributes) {
-        attributeArrays.push(scrapingAttributes[attr])
-    }
-
     try {
+        const scrapingAttributes = template[itemType]['attributes']
+        let attributeArrays = []
+
+        for (const attr in scrapingAttributes) {
+            attributeArrays.push(scrapingAttributes[attr])
+        }
+
         attributeArrays = cartesian(...attributeArrays)
 
         for (var i = 0; i < attributeArrays.length; i++) {
@@ -77,7 +77,9 @@ function scrapeItem(template, soup, itemType) {
                 }
             }
         }
-    } catch (e) {}
+    } catch (e) {
+        console.log("There must be an error with the template")
+    }
 
     return ''
 }
@@ -115,21 +117,60 @@ function getTemplateSelector(html) {
         prevDOM = srcElement;
     }
 
+    function generateAttributesMap(attributes, lookFor) {
+        let attrMap = {}
+
+        for (var i = 0; i < attributes.length; i++) {
+            if (attributes[i].nodeName === 'class') {
+                let values = attributes[i].nodeValue.split(' ')
+                let selectedValue = ''
+                for (var j = 0; j < values.length; j++) {
+                    if (values[j].toLowerCase().includes(lookFor)) {
+                        selectedValue = values[j]
+                        break
+                    }
+                }
+                if (selectedValue !== '') {
+                    attrMap[[attributes[i].nodeName]] = [selectedValue]
+                } else {
+                    attrMap[[attributes[i].nodeName]] = [attributes[i].nodeValue]
+                }
+            } else {
+                attrMap[[attributes[i].nodeName]] = [attributes[i].nodeValue]
+            }
+        }
+
+        return attrMap
+    }
+
     function onClickPrice(e) {
         doc.removeEventListener("mousemove", hover)
         doc.removeEventListener("click", onClickPrice)
         prevDOM.classList.remove(MOUSE_VISITED_CLASSNAME);
         const tag = e.target.tagName.toLowerCase()
         const attributes = e.target.attributes
-        let attrMap = {}
 
-        for (var i = 0; i < attributes.length; i++) {
-            attrMap[[attributes[i].nodeName]] = [attributes[i].nodeValue]
-        }
+        let attrMap = generateAttributesMap(attributes, 'price')
 
-        const element = {
+        let element = {
             tag: tag,
             attributes: attrMap
+        }
+
+        if (attrMap['id'] !== undefined) {
+            element = {
+                tag: tag,
+                attributes: {
+                    id: attrMap['id']
+                }
+            }
+        } else if (attrMap['class'] !== undefined) {
+            element = {
+                tag: tag,
+                attributes: {
+                    class: attrMap['class']
+                }
+            }
         }
 
         const price = scrapeItem({price: element}, soup, 'price')
@@ -152,15 +193,28 @@ function getTemplateSelector(html) {
         prevDOM.classList.remove(MOUSE_VISITED_CLASSNAME);
         const tag = e.target.tagName.toLowerCase()
         const attributes = e.target.attributes
-        let attrMap = {}
+        
+        let attrMap = generateAttributesMap(attributes, 'title')
 
-        for (var i = 0; i < attributes.length; i++) {
-            attrMap[[attributes[i].nodeName]] = [attributes[i].nodeValue]
-        }
-
-        const element = {
+        let element = {
             tag: tag,
             attributes: attrMap
+        }
+
+        if (attrMap['id'] !== undefined) {
+            element = {
+                tag: tag,
+                attributes: {
+                    id: attrMap['id']
+                }
+            }
+        } else if (attrMap['class'] !== undefined) {
+            element = {
+                tag: tag,
+                attributes: {
+                    class: attrMap['class']
+                }
+            }
         }
 
         const title = scrapeItem({title: element}, soup, 'title')
