@@ -263,18 +263,22 @@ function getTemplateSelector(html) {
             delete element['attributes']['src']
             delete element['attributes']['alt']
 
-            if (attrMap['id'] !== undefined) {
+            for (const key in element['attributes']) {
+                element['attributes'][key] = [element['attributes'][key]]
+            }
+
+            if (element['attributes']['id'] !== undefined) {
                 element = {
                     tag: 'img',
                     attributes: {
-                        id: attrMap['id']
+                        id: element['attributes']['id'] 
                     }
                 }
-            } else if (attrMap['class'] !== undefined) {
+            } else if (element['attributes']['class'] !== undefined) {
                 element = {
                     tag: 'img',
                     attributes: {
-                        class: attrMap['class']
+                        class: element['attributes']['class']
                     }
                 }
             }
