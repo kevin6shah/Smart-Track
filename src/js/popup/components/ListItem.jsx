@@ -18,6 +18,13 @@ export default class ListItem extends Component {
     }
     
     render() {
+        let hostname = ''
+        
+        try {
+            hostname = new URL(this.props.scrapedData.url).hostname.replace('www.', '')
+            hostname = hostname.substring(0, hostname.indexOf('.'))
+        } catch (e) {}
+
         return (
             <div style={{ textAlign: 'left' }}>
                 {this.props.showButton ?
@@ -29,12 +36,15 @@ export default class ListItem extends Component {
                     <img src={this.props.scrapedData.img}
                         className='itemPic' height='100px' width='100px'/>
                     <div style={{
-                        padding: '5px',
+                        padding: '7px',
                     }}>
-                        <img src='https://www.marketplace.org/wp-content/uploads/2019/07/Amazondotcom.png' height='17px' width='90px'/>
                         <p style={{
-                            marginTop: '5px'
-                        }}>{this.getTitle()}</p>
+                            fontSize: '16px',
+                            fontWeight: '500',
+                            paddingBottom: '5px',
+                            textTransform: 'capitalize',
+                        }}>{hostname}</p>
+                        <p>{this.getTitle()}</p>
                     </div>
                 </span>
                 <hr/>

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A chrome extension to track ecommerce product prices",
   "permissions": [
+    "alarms",
     "activeTab", 
     "declarativeContent", 
     "storage",
@@ -26,7 +27,8 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["contentScript.bundle.js"]
+      "js": ["contentScript.bundle.js"],
+      "css": ["hover.css"]
     }
   ],
   "manifest_version": 2,
