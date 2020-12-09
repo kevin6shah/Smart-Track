@@ -130,7 +130,9 @@ function getTemplateSelector(html) {
     const doc = document.getElementsByTagName('body')[0]
     var MOUSE_VISITED_CLASSNAME = 'crx_mouse_visited';
     var prevDOM = null;
-    let template = {}
+    let template = {
+        hostname: window.location.hostname,
+    }
 
     function sendToFirestore() {
         initializeFirebase()
@@ -231,19 +233,13 @@ function getTemplateSelector(html) {
         }
 
         delete element['attributes']['src']
+        delete element['attributes'][[MOUSE_VISITED_CLASSNAME]]
 
         if (attrMap['id'] !== undefined) {
             element = {
                 tag: tag,
                 attributes: {
                     id: attrMap['id']
-                }
-            }
-        } else if (attrMap['class'] !== undefined) {
-            element = {
-                tag: tag,
-                attributes: {
-                    class: attrMap['class']
                 }
             }
         }
@@ -262,6 +258,7 @@ function getTemplateSelector(html) {
 
             delete element['attributes']['src']
             delete element['attributes']['alt']
+            delete element['attributes'][[MOUSE_VISITED_CLASSNAME]]
 
             for (const key in element['attributes']) {
                 element['attributes'][key] = [element['attributes'][key]]
@@ -272,13 +269,6 @@ function getTemplateSelector(html) {
                     tag: 'img',
                     attributes: {
                         id: element['attributes']['id'] 
-                    }
-                }
-            } else if (element['attributes']['class'] !== undefined) {
-                element = {
-                    tag: 'img',
-                    attributes: {
-                        class: element['attributes']['class']
                     }
                 }
             }
@@ -325,14 +315,9 @@ function getTemplateSelector(html) {
                     id: attrMap['id']
                 }
             }
-        } else if (attrMap['class'] !== undefined) {
-            element = {
-                tag: tag,
-                attributes: {
-                    class: attrMap['class']
-                }
-            }
         }
+
+        delete element['attributes'][[MOUSE_VISITED_CLASSNAME]]
 
         const price = scrapeItem({price: element}, soup, 'price')
 
@@ -370,14 +355,9 @@ function getTemplateSelector(html) {
                     id: attrMap['id']
                 }
             }
-        } else if (attrMap['class'] !== undefined) {
-            element = {
-                tag: tag,
-                attributes: {
-                    class: attrMap['class']
-                }
-            }
         }
+
+        delete element['attributes'][[MOUSE_VISITED_CLASSNAME]]
 
         const title = scrapeItem({title: element}, soup, 'title')
 

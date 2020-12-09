@@ -14,6 +14,8 @@ export default class Main extends Component {
         threshold: '',
         isCollapsed: true,
         error: false,
+        email: '',
+        role: '',
     }
     
     componentDidMount() {
@@ -22,7 +24,10 @@ export default class Main extends Component {
             .doc(UID).get().then((result) => {
                 this.setState({
                     isTracking: Object.keys(result.data()['trackedMap'])
-                        .includes(this.getItemID(this.props.scrapedData.url))
+                        .includes(this.getItemID(this.props.scrapedData.url)),
+                    email: result.data()['email'],
+                    role: (result.data()['role'] !== undefined)
+                        ? '[' + result.data()['role'] + ']' : ''
                 })
             })
     }
@@ -114,6 +119,10 @@ export default class Main extends Component {
         else return false;
     }
 
+    onOptionsClicked = () => {
+        chrome.runtime.openOptionsPage()
+    }
+
     onTrackClicked = () => {
         if (this.props.scrapedData.title !== 'Not Available' &&
             this.props.scrapedData.price !== 'Not Available') {
@@ -179,10 +188,10 @@ export default class Main extends Component {
                 onClick={this.props.routeTo.bind(this, 'trackedlist')}>My Tracked List</button>
                 <hr/>
                 <div className='footer'>
-                    <button>
+                    <button onClick={this.onOptionsClicked}>
                         <span className='footerItemContainer'>
                             <i className="fas fa-user" style={{flex: 1}}></i>
-                            <p style={{flex: 9}}>Account Info</p>
+                            <p style={{flex: 9}}>{'Account Info: ' + this.state.email + ' ' + this.state.role}</p>
                             <i className="fas fa-chevron-right" style={{flex: 1, textAlign: 'right'}}></i>
                         </span>
                     </button><br />
