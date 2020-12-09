@@ -10,6 +10,7 @@ import Landing from './landing/landing';
 import Login from './login/login';
 import Profile from './profile/profile';
 import Templates from './templates/templates';
+import Products from './products/products';
 
 class OptionPage extends React.Component {
     constructor(props) {
@@ -90,6 +91,14 @@ class OptionPage extends React.Component {
                             path="/templates"
                             profile={this.state.profile}>
                             <Templates />
+                        </ProtectedRoute>
+                    </Route>
+
+                    <Route path="/products" >
+                        <ProtectedRoute
+                            path="/products"
+                            profile={this.state.profile}>
+                            <Products />
                         </ProtectedRoute>
                     </Route>
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 import Loading from '../utils/loading';
 
-class OptionsNavbar extends React.Component {
+class TemplateTable extends React.Component {
 
     render() {
 
@@ -23,16 +23,24 @@ class OptionsNavbar extends React.Component {
                     </thead>
                     <tbody>
                         {this.props.templateData.map((obj) =>
-                                <tr key={obj.id}>
-                                    <td> {obj.id} </td>
-                                    <td> {obj.name} </td>
-                                    <td> {obj.url} </td>
-                                    <td> {obj.price.attribute} </td>
-                                    <td> {obj.price.tag} </td>
-                                    <td> {obj.price.names.join(', ')} </td>
+                            <tr key={obj.id}>
+                                <td> {obj.id} </td>
+                                <td> {obj.name} </td>
+                                <td> {obj.url} </td>
+                                <td> {obj.price.attribute} </td>
+                                <td> {obj.price.tag} </td>
+                                <td> {obj.price.names.join(', ')} </td>
+                                <td>
+                                    <button className="btn btn-block btn-success">
+                                        {/* onClick={this.requestAction.bind(this, obj.ROW_NO)}>
+                                        {obj.REQ_ACTION} */}
+                                        Edit
+                                    </button>
+                                </td>
 
-                                </tr>
-                            )}
+
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>
@@ -42,6 +50,6 @@ class OptionsNavbar extends React.Component {
 
 }
 
-export default Loading(OptionsNavbar);
+export default Loading(TemplateTable);
 
 
