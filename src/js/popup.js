@@ -29,15 +29,19 @@ function initializeFirebase() {
 initializeFirebase()
 
 chrome.storage.sync.get("scrapedData", function (data) {
-  let initData = {
-    img: 'https://www.bu.edu/bedac/files/2015/10/Photo-placeholder.jpg',
-    title: "Not Available",
-    price: "Not Available",
-    url: "Not Available"
-  }
+  let initData = {}
 
-  if (data.scrapedData !== undefined && data.scrapedData.price !== '') {
-    initData = data.scrapedData
+  if (data.scrapedData !== undefined) {
+    if (data.scrapedData.price !== '') {
+      initData['price'] = data.scrapedData.price
+    } else initData['price'] = "Not Available"
+    if (data.scrapedData.title !== '') {
+      initData['title'] = data.scrapedData.title
+    } else initData['title'] = "Not Available"
+    if (data.scrapedData.img !== '') {
+      initData['img'] = data.scrapedData.img
+    } else initData['img'] = "https://www.bu.edu/bedac/files/2015/10/Photo-placeholder.jpg"
+    initData['url'] = data.scrapedData.url
   }
   
   render(

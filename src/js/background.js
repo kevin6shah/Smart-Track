@@ -31,6 +31,15 @@ function fetchData() {
     });
 }
 
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+        if (request.message == "fetchData") {
+        fetchData()
+        sendResponse({ status: "success" });
+    }
+  }
+);
+
 chrome.runtime.onInstalled.addListener(() => {
     chrome.alarms.create('fetchData', { periodInMinutes: 180 });
     initializeFirebase()

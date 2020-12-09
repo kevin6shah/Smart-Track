@@ -1,4 +1,24 @@
 import JSSoup from 'jssoup';
+import firebase from 'firebase'
+require("firebase/firestore");
+
+function initializeFirebase() {
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+    apiKey: "AIzaSyBbg-3-MdPoJEqIYsy7oPY-ygiG_nbEFDQ",
+    authDomain: "smart-track-d9d47.firebaseapp.com",
+    databaseURL: "https://smart-track-d9d47.firebaseio.com",
+    projectId: "smart-track-d9d47",
+    storageBucket: "smart-track-d9d47.appspot.com",
+    messagingSenderId: "1037701953092",
+    appId: "1:1037701953092:web:221a8548a2dcfd13186e11",
+    measurementId: "G-Q7JZX1QQ9V"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+}
 
 function DOMtoString(document_root) {
     var html = '',
@@ -108,6 +128,32 @@ function getTemplateSelector(html) {
     var prevDOM = null;
     let template = {}
 
+    function sendToFirestore() {
+        initializeFirebase()
+        let db = firebase.firestore()
+        let templates = {}
+
+        db.collection("templates")
+            .doc(hostname).get().then((snapshot) => {
+                if (!snapshot.exists) {
+                    db.collection('templates').doc(hostname).set(template).then(() => {
+                        chrome.runtime.sendMessage({ message: "fetchData" }, function (response) {
+                            if (response && response.status === 'success') {
+                                let data = scrapeData(rawHtml, template)
+                                data['url'] = window.location.toString()
+                                chrome.storage.sync.set({ scrapedData: data });
+                                alert("Template creation was successful, please open the Smart Track extension and track the desired product")
+                            } else {
+                                alert("Template creation was not successful. Please try again later")
+                            }
+                        });
+                    })
+                } else {
+                    console.log("EXISTS")
+                }
+            })
+    }
+
     function hover(e) {
         var srcElement = e.srcElement;
         if (prevDOM != null) {
@@ -177,8 +223,7 @@ function getTemplateSelector(html) {
 
         if (confirm("Is this price correct?: " + price)) {
             template['price'] = element
-            console.log(template)
-            alert("SUCCESS!")
+            sendToFirestore()
         } else {
             if (confirm("Would you like to try again?")) {
                 doc.addEventListener("click", onClickPrice)
@@ -238,6 +283,8 @@ function getTemplateSelector(html) {
 }
 
 const rawHtml = DOMtoString(document)
+let hostname = window.location.hostname.replace('www.', '')
+hostname = hostname.substring(0, hostname.indexOf('.'))
 
 chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
     if (request.greeting == "startSelector") {
@@ -247,9 +294,6 @@ chrome.extension.onRequest.addListener(function (request, sender, sendResponse) 
 
 chrome.storage.sync.get('templates', function(backgroundData) {
     const scrapeTemplate = backgroundData.templates
-    console.log(scrapeTemplate)
-    let hostname = window.location.hostname.replace('www.', '')
-    hostname = hostname.substring(0, hostname.indexOf('.'))
     let data = scrapeData(rawHtml, scrapeTemplate[hostname])
     data['url'] = window.location.toString()
     console.log(data)
