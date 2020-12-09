@@ -8,9 +8,9 @@ import OptionsPage from './options/optionPage';
 
 ReactDOM.render(
     <React.StrictMode >
-        {/* <Router > */}
+        <Router >
             <OptionsPage />
-        {/* </Router> */}
+        </Router>
     </React.StrictMode >,
     window.document.getElementById("options-container")
 );

@@ -3,16 +3,31 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from 'react-router-dom';
-import { hot } from "react-hot-loader";
 
 import Logo from '../../../img/logo.png';
 
 class OptionsNavbar extends React.Component {
 
     render() {
+        let links = <>
+            <Link to='/' className="nav-link">Home </Link>
+        </>;
+        if (this.props.profile.role === "basic") {
+            links = <>
+                <Link to='/products' className="nav-link">Products </Link>
+                <Link to='/' className="nav-link">Stores </Link>
+                <Link to='/' className="nav-link">History </Link>
+            </>;
+        } else if (this.props.profile.role === "admin") {
+            links = <>
+                <Link to='/templates' className="nav-link">Templates </Link>
+
+            </>;
+        }
+
         return (
             <Navbar collapseOnSelect expand="md" bg="dark" variant="dark" className="mainNav sticky-top px-0 py-1">
-                <Navbar.Brand className=" col-sm-3 col-md-2 mr-0 overflow-hidden">
+                <Navbar.Brand className="col-sm-3 col-md-2 mr-2 ">
                     <img
                         src={Logo}
                         width="30"
@@ -20,7 +35,7 @@ class OptionsNavbar extends React.Component {
                         className="d-inline-block align-top mr-2"
                         alt="Price Tracker Logo"
                     />
-                    <span>
+                    <span className="mr-2">
                         Price Tracker
                     </span>
 
@@ -28,24 +43,13 @@ class OptionsNavbar extends React.Component {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" className="px-3">
                     <Nav className="mr-auto">
-                        <Nav.Link to='/' className="nav-link">Products </Nav.Link>
-                        <Nav.Link to='/' className="nav-link">Stores </Nav.Link>
-                        <Nav.Link to='/' className="nav-link">History </Nav.Link>
-                        <Nav.Link to='/' className="nav-link">Profile </Nav.Link>
+                        {links}
 
-
-                        <NavDropdown title="Dropdown" id="collapsible-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                        </NavDropdown>
                     </Nav>
 
                     <Nav>
+                        <Link to='/profile' className="nav-link">Profile </Link>
                     </Nav>
-
                 </Navbar.Collapse>
 
 
@@ -55,4 +59,4 @@ class OptionsNavbar extends React.Component {
 
 }
 
-export default hot(module)(OptionsNavbar)
+export default OptionsNavbar;
