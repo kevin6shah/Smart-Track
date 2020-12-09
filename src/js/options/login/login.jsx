@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from 'react-router-dom';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -41,18 +42,19 @@ class LoginMain extends React.Component {
                         if (role === null) {
                             role = 'basic';
                         }
-                        this.props.loginStateChange(user.email, role, user.uid);
+                        this.props.onLoginStateChange(user.email, role, user.uid);
                         console.log('logged in ', user.email, data.role, user.uid);
+                        //if we want to route back to previous page
+                        let history = this.props.history;
+                        let location = this.props.location;
+                        let { from } = location.state || { from: { pathname: "/" } };
+                        history.replace(from);
                     })
                     .catch(error => {
                         console.log(error);
                     });
 
-                // //if we want to route back to previous page
-                // let history = this.props.history;
-                // let location = this.props.location;
-                // let { from } = location.state || { from: { pathname: "/" } };
-                // history.replace(from);
+
 
             })
             .catch((error) => {
@@ -88,4 +90,4 @@ class LoginMain extends React.Component {
     }
 }
 
-export default LoginMain;
+export default withRouter(LoginMain);
