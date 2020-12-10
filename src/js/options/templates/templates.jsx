@@ -62,7 +62,7 @@ class Templates extends React.Component {
 
     render() {
         return (
-            <div className="container-fluid w-75 mt-4">
+            <div className="container-fluid mt-4">
                 <TemplateTable
                     fetchState={this.state.fetchState}
                     templateData={this.state.templates}
