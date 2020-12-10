@@ -393,6 +393,13 @@ chrome.storage.sync.get('templates', function(backgroundData) {
     const scrapeTemplate = backgroundData.templates
     let data = scrapeData(rawHtml, scrapeTemplate[hostname])
     data['url'] = window.location.toString()
+    if (scrapeTemplate[hostname]['adjustments'] !== undefined) {
+        for (const key in scrapeTemplate[hostname]['adjustments']) {
+            console.log(data[key])
+            console.log(scrapeTemplate[hostname]['adjustments'][key])
+            data[key] = data[key].replace(scrapeTemplate[hostname]['adjustments'][key], '')
+        }
+    }
     console.log(data)
     chrome.storage.sync.set({ scrapedData: data });
 });
