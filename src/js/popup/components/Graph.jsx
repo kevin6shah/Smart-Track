@@ -34,7 +34,7 @@ export default class Graph extends Component {
 
 	render() {
 		return (
-            <div className='graph'>
+            <div>
                 {this.state.x.length === 0
                     ? <div style={{ fontSize: '15px', padding: '90px'}}>
                         No historical data available

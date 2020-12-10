@@ -15,13 +15,14 @@ class ProductsTable extends React.Component {
                         Search for products you want to start track!
                     </p>
                 </div>
-                <div className="products-grid row">
+                <div className="products-grid row justify-content-center">
                     {this.props.productData.map((obj) =>
                         <div key={obj.id} className="card product-card m-4 box-shadow">
                             <div className="card-header">
                                 <h4 className="my-0 font-weight-normal">{obj.id}</h4>
                             </div>
-                            <img className="card-img-top product-img" src={obj.img} alt="Card image cap" />
+                            <img className="card-img-top product-img" src={obj.img} alt="Card image cap"
+                                style={{objectFit: 'contain', padding: '10px'}}/>
                             <div className="card-body">
                                 <h1 className="card-title pricing-card-title">
                                     ${obj.priceHistory[obj.priceHistory.length - 1].price}

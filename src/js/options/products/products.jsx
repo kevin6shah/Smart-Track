@@ -59,7 +59,6 @@ class Products extends React.Component {
                         <ProductDetail
                             prod={this.state.clickProd}
                             setProd={this.setProd}
-
                         />
                     ) : (
                         <ProductsTable

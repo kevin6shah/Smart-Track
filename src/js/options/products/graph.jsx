@@ -45,8 +45,8 @@ export default class Graph extends React.Component {
                         layout={{
                             autorange: false,
                             autosize: false,
-                            width: 300,
-                            height: 215,
+                            width: '60%',
+                            height: '30%',
                             title: 'Price Graph',
                             margin: {
                                 l: 42,
