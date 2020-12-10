@@ -13,23 +13,31 @@ class TemplateTable extends React.Component {
                                 table-fixed">
                     <thead className="thead-light">
                         <tr>
-                            <th scope="col">Id</th>
                             <th scope="col">Website Name</th>
-                            <th scope="col">URL</th>
-                            <th scope="col">Price Attribute</th>
+                            <th scope="col">Image Tag</th>
+                            <th scope="col">Image Attribute</th>
+                            <th scope="col">Image Values</th>
                             <th scope="col">Price Tag</th>
-                            <th scope="col">Price Names</th>
+                            <th scope="col">Price Attribute</th>
+                            <th scope="col">Price Values</th>
+                            <th scope="col">Title Tag</th>
+                            <th scope="col">Title Attribute</th>
+                            <th scope="col">Title Values</th>
                         </tr>
                     </thead>
                     <tbody>
                         {this.props.templateData.map((obj) =>
-                            <tr key={obj.id}>
-                                <td> {obj.id} </td>
-                                <td> {obj.name} </td>
-                                <td> {obj.url} </td>
-                                <td> {obj.price.attribute} </td>
-                                <td> {obj.price.tag} </td>
-                                <td> {obj.price.names.join(', ')} </td>
+                            <tr key={obj[0]}>
+                                <td> {obj[0]} </td>
+                                <td> {obj[1]} </td>
+                                <td> {obj[2]} </td>
+                                <td> {obj[3]} </td>
+                                <td> {obj[4]} </td>
+                                <td> {obj[5]} </td>
+                                <td> {obj[6]} </td>
+                                <td> {obj[7]} </td>
+                                <td> {obj[8]} </td>
+                                <td> {obj[9]} </td>
                                 <td>
                                     <button className="btn btn-block btn-success">
                                         {/* onClick={this.requestAction.bind(this, obj.ROW_NO)}>
@@ -37,8 +45,6 @@ class TemplateTable extends React.Component {
                                         Edit
                                     </button>
                                 </td>
-
-
                             </tr>
                         )}
                     </tbody>

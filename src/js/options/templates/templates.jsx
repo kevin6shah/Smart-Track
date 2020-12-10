@@ -18,21 +18,45 @@ class Templates extends React.Component {
         this.setState({ fetchState: 'loading' });
         let db = firebase.firestore();
 
-        db.collection('websites')
+        db.collection('templates')
             .get()
             .then(querySnapshot => {
-                const data = querySnapshot.docs.map(
-                    doc => {
-                        const dataNotId = doc.data();
-                        return { id: doc.id, ...dataNotId };
+                const data = querySnapshot.docs.map(doc => doc.data());
+                let dataRowFormat = []
+                const type = ['img', 'price', 'title']
+                console.log(data)
+
+                for (const company in data) {
+                    let row = [data[company]['hostname']]
+                    for (var i = 0; i < type.length; i++) {
+                        if (data[company][type[i]] !== undefined) {
+                            row.push(data[company][type[i]]['tag'])
+                            row.push(Object.keys(data[company][type[i]]['attributes']).join(', '))
+                            let attr = []
+                            for (const attribute in data[company][type[i]]['attributes']) {
+                                if (data[company][type[i]]['attributes'][attribute].length === 1) {
+                                    attr.push(data[company][type[i]]['attributes'][attribute])
+                                } else {
+                                    attr.push('[' + data[company][type[i]]['attributes'][attribute].join(', ') + ']')
+                                }
+                            }
+                            row.push(attr.join(', '))
+                        } else {
+                            row.push('N/A')
+                            row.push('N/A')
+                            row.push('N/A')
+                        }
                     }
-                );
-                this.setState({ fetchState: 'success', templates: data });
+                    dataRowFormat.push(row)
+                }
+
+                console.log(dataRowFormat)
+
+                this.setState({ fetchState: 'success', templates: dataRowFormat });
             })
             .catch(error => {
                 console.log(error);
                 this.setState({ fetchState: 'failure' });
-
             });
     }
 
