@@ -22,19 +22,23 @@ export default class Main extends Component {
         const UID = localStorage.getItem('uid').toString()
         this.state.instance.collection('users')
             .doc(UID).get().then((result) => {
-                this.setState({
-                    isTracking: Object.keys(result.data()['trackedMap'])
-                        .includes(this.getItemID(this.props.scrapedData.url)),
-                    email: result.data()['email'],
-                    role: (result.data()['role'] !== undefined)
-                        ? '[' + result.data()['role'] + ']' : ''
-                })
+                try {
+                    let hostname = new URL(this.props.scrapedData.url).hostname.replace('www.', '')
+                    hostname = hostname.substring(0, hostname.indexOf('.'))
+                    this.setState({
+                        isTracking: Object.keys(result.data()['trackedMap'])
+                            .includes(this.getItemID(hostname, this.props.scrapedData.title)),
+                        email: result.data()['email'],
+                        role: (result.data()['role'] !== undefined)
+                            ? '[' + result.data()['role'] + ']' : ''
+                    })
+                } catch (e) {}
             })
     }
 
-    getItemID = (url) => {
+    getItemID = (hostname, title) => {
         const stringHash = require("string-hash");
-        return stringHash(url).toString()
+        return stringHash(hostname + title).toString()
     }
 
     currencyToFloat = (currency) => {
@@ -43,7 +47,15 @@ export default class Main extends Component {
     }
 
     startTracking = async () => {
-        const ID = this.getItemID(this.props.scrapedData.url)
+        let hostname = ''
+        try {
+            hostname = new URL(this.props.scrapedData.url).hostname.replace('www.', '')
+            hostname = hostname.substring(0, hostname.indexOf('.'))
+        } catch (e) {
+            alert('This website cannot be tracked!')
+            return
+        }
+        const ID = this.getItemID(hostname, this.props.scrapedData.title)
         const UID = localStorage.getItem('uid').toString()
         const instance = this.state.instance
         const userDocReference = instance.collection('users').doc(UID)
@@ -182,7 +194,7 @@ export default class Main extends Component {
                     margin: '0px',
                 }}>{this.state.isTracking ? 'Stop Tracking' : 'Track'}</button>
                 <hr style={{marginBottom: '0px'}}/>
-                <Graph instance={this.state.instance} url={this.props.scrapedData.url}/>
+                <Graph instance={this.state.instance} scrapedData={this.props.scrapedData}/>
                 <hr style={{ marginTop: '0px' }} />
                 <button className='bigButton trackedListButton'
                 onClick={this.props.routeTo.bind(this, 'trackedlist')}>My Tracked List</button>

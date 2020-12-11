@@ -7,29 +7,33 @@ export default class Graph extends Component {
         y: [],
     }
 
-    getItemID = (url) => {
+    getItemID = (hostname, title) => {
         const stringHash = require("string-hash");
-        return stringHash(url).toString()
+        return stringHash(hostname + title).toString()
     }
 
     componentDidMount() {
-        const ID = this.getItemID(this.props.url)
-        this.props.instance.collection('items')
-            .doc(ID).get().then((result) => {
-                if (result.exists) {
-                    const priceHistory = result.data()['priceHistory']
-                    let x = []
-                    let y = []
-                    for (var i = 0; i < priceHistory.length; i++) {
-                        x.push(priceHistory[i]['date'].toDate())
-                        y.push(priceHistory[i]['price'])
+        try {
+            let hostname = new URL(this.props.scrapedData.url).hostname.replace('www.', '')
+            hostname = hostname.substring(0, hostname.indexOf('.'))
+            const ID = this.getItemID(hostname, this.props.scrapedData.title)
+            this.props.instance.collection('items')
+                .doc(ID).get().then((result) => {
+                    if (result.exists) {
+                        const priceHistory = result.data()['priceHistory']
+                        let x = []
+                        let y = []
+                        for (var i = 0; i < priceHistory.length; i++) {
+                            x.push(priceHistory[i]['date'].toDate())
+                            y.push(priceHistory[i]['price'])
+                        }
+                        this.setState({
+                            x: x,
+                            y: y,
+                        })
                     }
-                    this.setState({
-                        x: x,
-                        y: y,
-                    })
-                }
-            })
+                })
+        } catch (e) {}
     }
 
 	render() {
