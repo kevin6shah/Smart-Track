@@ -1,4 +1,4 @@
-# Price Tracker
+# Smart Track
 
 ...
 
