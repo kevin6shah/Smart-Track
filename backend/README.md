@@ -1,4 +1,4 @@
-# Price Tracker Scraper
+# Smart Track Scraper
 * Pull urls from firebase and scrapes data
 
 ## Usage
