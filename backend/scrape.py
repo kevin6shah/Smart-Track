@@ -67,7 +67,7 @@ def init_webdriver():
     '''
     log_path = os.environ.get("LOG_FILE") + "webdriver.log"
     driver_path = os.environ.get("WEBDRIVER")
-    user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
+    user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
 
     options = webdriver.ChromeOptions()
     options.headless = True
