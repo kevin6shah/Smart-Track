@@ -2,6 +2,12 @@ node_modules
 build
 secrets.*.js
 venv
+env
 .flaskenv
 __pycache__
 .DS_Store
+.vscode
+.env
+backend/*.json
+geckodriver*
+chromedriver*
