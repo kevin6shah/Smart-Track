@@ -8,6 +8,8 @@ from firebase_admin import firestore
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from random_user_agent.user_agent import UserAgent
+from random_user_agent.params import SoftwareName, OperatingSystem
 from urllib.parse import urlparse
 import itertools
 
@@ -67,12 +69,20 @@ def init_webdriver():
     '''
     log_path = os.environ.get("LOG_FILE") + "webdriver.log"
     driver_path = os.environ.get("WEBDRIVER")
-    user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
+    softwareNames = [SoftwareName.CHROME.value]
+    OperatingSystems = [OperatingSystem.WINDOWS.value,
+                        OperatingSystem.LINUX.value]
+    user_agent_rotator = UserAgent(software_names=softwareNames,
+                           operating_systems=OperatingSystems, limit=100)
+    user_agent = user_agent_rotator.get_random_user_agent()
 
     options = webdriver.ChromeOptions()
-    options.headless = True
     prefs = {"profile.managed_default_content_settings.images": 2}
     options.add_experimental_option("prefs", prefs)
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--window-size=1420,1080')
+    options.add_argument('--disable-gpu')
     options.add_argument(f'user-agent={user_agent}')
 
     wd = webdriver.Chrome(
