@@ -11,6 +11,7 @@ from selenium.webdriver.firefox.options import Options
 from urllib.parse import urlparse
 import itertools
 
+
 def configure_logging():
     '''
     Sets up logging format, output, and other config.
@@ -19,7 +20,7 @@ def configure_logging():
     '''
 
     logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
     log_path = str(os.environ.get("LOG_FILE")) + "scrape.log"
     handler = logging.FileHandler(log_path)
     # handler = logging.StreamHandler()
@@ -101,6 +102,8 @@ def scrape(wd, db, templates, items):
     Main scrape method
     @TODO break this down into multiple methods
     '''
+    fail = 0
+    success = 0
     for ID in items:
         title = items[ID]['title'][:20]
         url = items[ID]['url']
@@ -145,14 +148,21 @@ def scrape(wd, db, templates, items):
                         f'updating price for {title} to {newPrice}')
                     update_db(db, items, ID, newPrice)
                 elementFound = True
+                success += 1
                 break
             except:
                 pass
 
         if (not elementFound):
             print(f'An error occurred while scraping [{ID}] {title}')
-            logger.error(
-                f'Could not scrape [{ID}] {title}')
+            logger.warning(
+                f'Could not scrape [{ID}] {title}...')
+            fail += 1
+
+    successRate = round(float(success/(fail + success)) * 100, 2)
+    print(f'Scraping Finished | Success Rate: {successRate}%')
+    logger.info(
+        f'Scraping Finished | Success Rate: {successRate}%')
 
 
 def update_db(db, items, k, new_price):
@@ -185,7 +195,6 @@ def main():
         print(e)
         logger.error(e)
 
-    logger.info("Finished")
     wd.quit()
 
 
