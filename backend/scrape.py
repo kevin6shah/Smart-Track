@@ -12,7 +12,8 @@ from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import SoftwareName, OperatingSystem
 from urllib.parse import urlparse
 import itertools
-
+from colorama import init, Fore
+init(autoreset=True)
 
 def configure_logging():
     '''
@@ -96,7 +97,11 @@ def init_webdriver():
 def get_items(db):
     items_ref = db.collection(u'items')
     docs = items_ref.stream()
-    docs_dict = {doc.id: doc.to_dict() for doc in docs}
+    docs_dict = {}
+    for doc in docs:
+        doc_temp_dict = doc.to_dict()
+        if (len(doc_temp_dict['emailMap']) > 0):
+            docs_dict[doc.id] = doc_temp_dict
 
     return docs_dict
 
@@ -155,7 +160,7 @@ def scrape(wd, db, templates, items):
                 newPrice = round(float(newPrice.split()[0]), 2)
                 oldPrice = float(items[ID]['priceHistory'][-1]['price'])
                 if (oldPrice != newPrice):
-                    print('update needed old', oldPrice, 'new', newPrice)
+                    print(Fore.GREEN + 'update needed old', oldPrice, 'new', newPrice)
                     logger.info(
                         f'updating price for {title} to {newPrice}')
                     update_db(db, items, ID, newPrice)
@@ -166,13 +171,13 @@ def scrape(wd, db, templates, items):
                 pass
 
         if (not elementFound):
-            print(f'An error occurred while scraping [{ID}] {title}')
+            print(Fore.RED + f'An error occurred while scraping [{ID}] {title}')
             logger.warning(
                 f'Could not scrape [{ID}] {title}...')
             fail += 1
 
     successRate = round(float(success/(fail + success)) * 100, 2)
-    print(f'Scraping Finished | Success Rate: {successRate}%')
+    print(Fore.CYAN + f'Scraping Finished | Success Rate: {successRate}%')
     logger.info(
         f'Scraping Finished | Success Rate: {successRate}%')
 
