@@ -399,6 +399,5 @@ chrome.storage.sync.get('templates', function(backgroundData) {
             data[key] = data[key].replace(scrapeTemplate[hostname]['adjustments'][key], '')
         }
     }
-    console.log(data)
     chrome.storage.sync.set({ scrapedData: data });
 });

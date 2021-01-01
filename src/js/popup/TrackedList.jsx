@@ -9,6 +9,7 @@ export default class TrackedList extends Component {
     state = {
         itemMap: {},
         instance: firebase.firestore(),
+        status: 'Loading...',
     }
 
     componentDidMount() {
@@ -33,6 +34,7 @@ export default class TrackedList extends Component {
                 }
                 this.setState({
                     itemMap: itemMap,
+                    status: (Object.keys(itemMap).length === 0) ? 'No Tracked Items...' : ''
                 })
         })
     }
@@ -79,8 +81,8 @@ export default class TrackedList extends Component {
                     <i className="fas fa-chevron-left"></i>
                 </button>
                 {
-                    itemList.length === 0 ? 
-                        <div style={{fontSize: '13px', padding: '20px'}}>No Tracked Items...</div> :
+                    this.state.status !== '' ? 
+                        <div style={{ fontSize: '13px', padding: '20px' }}>{this.state.status}</div> :
                     itemList.map((ID) => <ListItem
                         key={uuidv4()}
                         scrapedData={this.state.itemMap[ID]} showButton={true}
