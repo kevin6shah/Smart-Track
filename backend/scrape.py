@@ -1,3 +1,5 @@
+import ssl
+import smtplib
 import os
 import logging
 import datetime
@@ -14,6 +16,71 @@ from urllib.parse import urlparse
 import itertools
 from colorama import init, Fore
 init(autoreset=True)
+
+def sendConfirmation(success_rate):
+    port = 587  # For starttls
+    smtp_server = "smtp.gmail.com"
+    sender_email = "smarttrack698@gmail.com"
+    receiver_email = os.environ.get("CONFIRMATION_EMAIL")
+    password = os.environ.get("SENDER_PWD")
+
+    message = f"""From: Smart Track <{sender_email}>
+To: <{receiver_email}>
+Subject: Daily Success Rate
+
+Dear Admin User,
+
+The success rate for today was {success_rate}%.
+
+Thanks,
+Your Smart Track Team
+"""
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP(smtp_server, port) as server:
+        server.ehlo()  # Can be omitted
+        server.starttls(context=context)
+        server.ehlo()  # Can be omitted
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, message)
+
+def sendEmails(item, newPrice):
+    emailMap = item['emailMap']
+    title = item['title']
+    port = 587  # For starttls
+    smtp_server = "smtp.gmail.com"
+    sender_email = "smarttrack698@gmail.com"
+    password = os.environ.get("SENDER_PWD")
+
+    for email in emailMap:
+        threshold = emailMap[email]
+        if (float(newPrice) < float(threshold)):
+            message = f"""From: Smart Track <{sender_email}>
+To: <{email}>
+Subject: Price Drop Alert
+
+Smart Track User,
+
+The following item that you are tracking has dropped in price:
+
+{title}
+
+Current Price: ${newPrice}
+Threshold Price: ${threshold}
+
+{item['url']}
+
+Thanks,
+Your Smart Track Team
+"""
+
+            context = ssl.create_default_context()
+            with smtplib.SMTP(smtp_server, port) as server:
+                server.ehlo()  # Can be omitted
+                server.starttls(context=context)
+                server.ehlo()  # Can be omitted
+                server.login(sender_email, password)
+                server.sendmail(sender_email, email, message)
 
 def configure_logging():
     '''
@@ -164,6 +231,7 @@ def scrape(wd, db, templates, items):
                     logger.info(
                         f'updating price for {title} to {newPrice}')
                     update_db(db, items, ID, newPrice)
+                    sendEmails(items[ID], newPrice)
                 elementFound = True
                 success += 1
                 break
@@ -180,6 +248,7 @@ def scrape(wd, db, templates, items):
     print(Fore.CYAN + f'Scraping Finished | Success Rate: {successRate}%')
     logger.info(
         f'Scraping Finished | Success Rate: {successRate}%')
+    sendConfirmation(successRate)
 
 
 def update_db(db, items, k, new_price):
