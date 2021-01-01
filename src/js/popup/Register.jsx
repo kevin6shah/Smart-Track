@@ -12,12 +12,16 @@ export default class Register extends Component {
         errorColor: 'red',
     }
 
-    signUpUser = (email, password) => {
+    signUpUser = (fname, lname, email, password) => {
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((user) => {
-            console.log(user.user.uid);
             firebase.firestore().collection('users').doc(user.user.uid)
-                .set({ 'trackedMap': {}, 'email': user.user.email }).then((r) => {
+                .set({
+                    'trackedMap': {},
+                    'email': user.user.email,
+                    'fname': fname,
+                    'lname': lname,
+                }).then((r) => {
                     this.setState({
                         error: true,
                         errorMessage: 'Successfully signed up! Please go back to the login page.',
