@@ -69,7 +69,8 @@ class Profile extends React.Component {
     }
 
     render() {
-        console.log(this.props.profile);
+        const profile = this.props.profile
+
         return (
             <div className="container w-75 mt-4 emp-profile">
                 <form>
@@ -87,12 +88,13 @@ class Profile extends React.Component {
                         <div className="col-md-6">
                             <div className="profile-head">
                                 <h5>
-                                    Firstname Lastname
+                                    {profile.displayName}
                                 </h5>
                                 <h6>
-                                    Web Developer and Designer
+                                    {profile.uid}
                                     </h6>
-                                <p className="proile-rating">RANKINGS : <span>8/10</span></p>
+                                <p className="proile-rating">ACCOUNT TYPE : <span>{profile.role.charAt(0).toUpperCase() +
+                                        profile.role.toLowerCase().slice(1) + ' User'}</span></p>
                                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                                     <li className="nav-item">
                                         <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
@@ -111,7 +113,6 @@ class Profile extends React.Component {
                                 onClick={this.handleLogout} >
                                 Log Out
                             </button>
-
                         </div>
                     </div>
                     <div className="row">
@@ -134,10 +135,10 @@ class Profile extends React.Component {
                                 <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <label>User Id</label>
+                                            <label>Email</label>
                                         </div>
                                         <div className="col-md-6">
-                                            <p>{'UserId'}</p>
+                                            <p>{profile.username}</p>
                                         </div>
                                     </div>
                                     <div className="row">
@@ -145,31 +146,7 @@ class Profile extends React.Component {
                                             <label>Name</label>
                                         </div>
                                         <div className="col-md-6">
-                                            <p>Firstname Lastname</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Email</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{'Email'}</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Phone</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>123 456 7890</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Profession</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>Web Developer and Designer</p>
+                                            <p>{profile.displayName}</p>
                                         </div>
                                     </div>
                                 </div>

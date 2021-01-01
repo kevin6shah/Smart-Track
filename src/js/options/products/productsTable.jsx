@@ -16,13 +16,16 @@ class ProductsTable extends React.Component {
                     </p>
                 </div>
                 <div className="products-grid row justify-content-center">
-                    {this.props.productData.map((obj) =>
-                        <div key={obj.id} className="card product-card m-4 box-shadow">
+                    {this.props.productData.map((obj) => {
+                        let hostname = obj.url.replace('http://', '')
+                            .replace('https://', '').replace('www.', '')
+                        hostname = hostname[0].toUpperCase() + hostname.substring(1, hostname.indexOf('.'))
+                        return <div key={obj.id} className="card product-card m-4 box-shadow">
                             <div className="card-header">
-                                <h4 className="my-0 font-weight-normal">{obj.id}</h4>
+                                <h4 className="my-0 font-weight-normal">{hostname}</h4>
                             </div>
                             <img className="card-img-top product-img" src={obj.img} alt="Card image cap"
-                                style={{objectFit: 'contain', padding: '10px'}}/>
+                                style={{ objectFit: 'contain', padding: '10px' }} />
                             <div className="card-body">
                                 <h1 className="card-title pricing-card-title">
                                     ${obj.priceHistory[obj.priceHistory.length - 1].price}
@@ -34,14 +37,15 @@ class ProductsTable extends React.Component {
                                     </li>
                                     <li><a href={obj.url}>Product Link</a></li>
                                 </ul>
-                                <button 
-                                    className="btn btn-primary m-2" 
-                                    onClick={(e) => {this.props.setProd(obj.id)}}>
+                                <button
+                                    className="btn btn-primary m-2"
+                                    onClick={(e) => { this.props.setProd(obj.id) }}>
                                     Details
                                 </button>
 
                             </div>
                         </div>
+                        }
                     )}
 
                 </div>

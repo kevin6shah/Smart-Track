@@ -11,6 +11,7 @@ import Login from './login/login';
 import Profile from './profile/profile';
 import Templates from './templates/templates';
 import Products from './products/products';
+import Stores from './stores/stores';
 
 class OptionPage extends React.Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class OptionPage extends React.Component {
         this.state = {
             profile: {
                 uid: null,
+                displayName: '',
                 username: 'ANON',
                 role: 'ROLE_ANON',
             },
@@ -25,12 +27,13 @@ class OptionPage extends React.Component {
         this.loginStateChange = this.loginStateChange.bind(this);
     }
 
-    loginStateChange(newUsername, newRole, newUid) {
+    loginStateChange(newUsername, newRole, newUid, displayName) {
         this.setState({
             profile: {
                 uid: newUid,
                 username: newUsername,
                 role: newRole,
+                displayName: displayName,
             },
         });
     }
@@ -61,8 +64,8 @@ class OptionPage extends React.Component {
                         if (!role) {
                             role = 'basic';
                         }
-                        this.loginStateChange(user.email, role, user.uid);
-                        console.log('logged in ', user.email, role, user.uid);
+                        this.loginStateChange(user.email, role, user.uid, user.displayName);
+                        console.log('logged in ', user.email, role, user.uid, user.displayName);
                     })
                     .catch(error => {
                         console.log(error);
@@ -91,6 +94,14 @@ class OptionPage extends React.Component {
                             path="/templates"
                             profile={this.state.profile}>
                             <Templates />
+                        </ProtectedRoute>
+                    </Route>
+
+                    <Route path="/stores" >
+                        <ProtectedRoute
+                            path="/stores"
+                            profile={this.state.profile}>
+                            <Stores />
                         </ProtectedRoute>
                     </Route>
 

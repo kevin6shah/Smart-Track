@@ -15,7 +15,7 @@ class OptionsNavbar extends React.Component {
         if (this.props.profile.role === "basic") {
             links = <>
                 <Link to='/products' className="nav-link">Products </Link>
-                <Link to='/' className="nav-link">Stores </Link>
+                <Link to='/stores' className="nav-link">Stores </Link>
                 <Link to='/' className="nav-link">History </Link>
             </>;
         } else if (this.props.profile.role === "admin") {

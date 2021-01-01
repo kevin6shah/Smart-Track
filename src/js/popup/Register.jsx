@@ -14,20 +14,26 @@ export default class Register extends Component {
 
     signUpUser = (fname, lname, email, password) => {
         firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then((user) => {
-            firebase.firestore().collection('users').doc(user.user.uid)
-                .set({
-                    'trackedMap': {},
-                    'email': user.user.email,
-                    'fname': fname,
-                    'lname': lname,
-                }).then((r) => {
-                    this.setState({
-                        error: true,
-                        errorMessage: 'Successfully signed up! Please go back to the login page.',
-                        errorColor: '#4caf50',
+            .then((userCredentials) => {
+                if (userCredentials.user) {
+                    userCredentials.user.updateProfile({
+                        displayName: fname + ' ' + lname,
+                    }).then((s) => {
+                        firebase.firestore().collection('users').doc(userCredentials.user.uid)
+                            .set({
+                                'trackedMap': {},
+                                'email': userCredentials.user.email,
+                                'fname': fname,
+                                'lname': lname,
+                            }).then((r) => {
+                                this.setState({
+                                    error: true,
+                                    errorMessage: 'Successfully signed up! Please go back to the login page.',
+                                    errorColor: '#4caf50',
+                                })
+                            })
                     })
-                })
+                }
         })
             .catch((error) => {
             this.setState({
