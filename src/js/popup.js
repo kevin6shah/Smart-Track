@@ -29,10 +29,11 @@ function initializeFirebase() {
 initializeFirebase()
 
 chrome.storage.sync.get("scrapedData", function (data) {
+  // https://www.bu.edu/bedac/files/2015/10/Photo-placeholder.jpg
   let initData = {
     'price': "Not Available",
     'title': "Not Available",
-    'img': "https://www.bu.edu/bedac/files/2015/10/Photo-placeholder.jpg",
+    'img': "",
   }
 
   if (data.scrapedData !== undefined) {

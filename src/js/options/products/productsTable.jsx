@@ -4,6 +4,17 @@ import React from 'react';
 import Loading from '../utils/loading';
 
 class ProductsTable extends React.Component {
+    onError = (id, hostname) => {
+        const api_src = 'https://logo.clearbit.com/' + hostname + '?size=200'
+        this.props.productData.map((obj) => {
+            if (obj.id === id && obj.img !== api_src) {
+                obj.img = api_src
+            } else if (obj.id === id && obj.img === api_src) {
+                obj.img = 'https://www.bu.edu/bedac/files/2015/10/Photo-placeholder.jpg'
+            }
+        })
+        this.setState({})
+    }
 
     render() {
         return (
@@ -17,14 +28,22 @@ class ProductsTable extends React.Component {
                 </div>
                 <div className="products-grid row justify-content-center">
                     {this.props.productData.map((obj) => {
-                        let hostname = obj.url.replace('http://', '')
-                            .replace('https://', '').replace('www.', '')
-                        hostname = hostname[0].toUpperCase() + hostname.substring(1, hostname.indexOf('.'))
+                        let hostname = ''
+                        let host = ''
+                        try {
+                            hostname = new URL(obj.url).hostname.replace('www.', '')
+                            host = hostname.substring(0, hostname.indexOf('.'))
+                        } catch (e) { }
+                        
                         return <div key={obj.id} className="card product-card m-4 box-shadow">
                             <div className="card-header">
-                                <h4 className="my-0 font-weight-normal">{hostname}</h4>
+                                <h4 className="my-0 font-weight-normal"
+                                    style={{ textTransform: 'capitalize' }}>{host}</h4>
                             </div>
-                            <img className="card-img-top product-img" src={obj.img} alt="Card image cap"
+                            <img className="card-img-top product-img" 
+                                src={obj.img}
+                                onError={this.onError.bind(this, obj.id, hostname)}
+                                alt={hostname}
                                 style={{ objectFit: 'contain', padding: '10px' }} />
                             <div className="card-body">
                                 <h1 className="card-title pricing-card-title">
@@ -50,6 +69,7 @@ class ProductsTable extends React.Component {
                         }
                     )}
                 </div>
+                <a className='text-muted' href="https://clearbit.com" style={{paddingBottom: '30px', fontSize: '12px'}}>Logos provided by Clearbit</a>
             </div>
 
         );

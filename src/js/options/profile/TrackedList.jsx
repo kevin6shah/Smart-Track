@@ -73,10 +73,15 @@ export default class TrackedList extends Component {
                 {
                     this.state.status !== '' ? 
                         <div style={{ fontSize: '13px', padding: '20px' }}>{this.state.status}</div> :
-                    itemList.map((ID) => <ListItem
-                        key={uuidv4()}
-                        scrapedData={this.state.itemMap[ID]} showButton={true}
-                        onClick={this.onItemClick} />)
+                        <div>
+                            {
+                                itemList.map((ID) => <ListItem
+                                    key={uuidv4()}
+                                    scrapedData={this.state.itemMap[ID]} showButton={true}
+                                    onClick={this.onItemClick} />)
+                            }
+                            <a className='text-muted' href="https://clearbit.com" style={{paddingBottom: '30px', fontSize: '12px'}}>Logos provided by Clearbit</a>
+                        </div>
                 }
             </div>
         )

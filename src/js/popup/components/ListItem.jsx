@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 
 export default class ListItem extends Component {
+    state = {
+        imgErrorHandler: '',
+    }
+    
     getTitle = () => {
         const titleArr = this.props.scrapedData.title.split(' ')
         let title = ''
@@ -16,13 +20,26 @@ export default class ListItem extends Component {
         console.log(ID)
         chrome.runtime.openOptionsPage()
     }
+
+    onError = (hostname) => {
+        if (this.state.imgErrorHandler === '') {
+            this.setState({
+                imgErrorHandler: 'https://logo.clearbit.com/' + hostname + '?size=200'
+            })
+        } else {
+            this.setState({
+                imgErrorHandler: 'https://www.bu.edu/bedac/files/2015/10/Photo-placeholder.jpg'
+            })
+        }
+    }
     
     render() {
         let hostname = ''
+        let host = ''
         
         try {
             hostname = new URL(this.props.scrapedData.url).hostname.replace('www.', '')
-            hostname = hostname.substring(0, hostname.indexOf('.'))
+            host = hostname.substring(0, hostname.indexOf('.'))
         } catch (e) {}
 
         return (
@@ -33,7 +50,10 @@ export default class ListItem extends Component {
                         Stop Tracking
                         </button> : <div></div>}
                 <span className='itemContainer'>
-                    <img src={this.props.scrapedData.img}
+                    <img src={(this.state.imgErrorHandler !== '') ?
+                        this.state.imgErrorHandler:
+                        this.props.scrapedData.img}
+                        onError={this.onError.bind(this, hostname)}
                         className='itemPic' height='100px' width='100px'/>
                     <div style={{
                         padding: '7px',
@@ -43,7 +63,7 @@ export default class ListItem extends Component {
                             fontWeight: '500',
                             paddingBottom: '5px',
                             textTransform: 'capitalize',
-                        }}>{hostname}</p>
+                        }}>{host}</p>
                         <p>{this.getTitle()}</p>
                     </div>
                 </span>
