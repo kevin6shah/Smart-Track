@@ -396,7 +396,12 @@ chrome.storage.sync.get('templates', function(backgroundData) {
     if (scrapeTemplate[hostname] &&
         scrapeTemplate[hostname]['adjustments']) {
         for (const key in scrapeTemplate[hostname]['adjustments']) {
-            data[key] = data[key].replace(scrapeTemplate[hostname]['adjustments'][key], '')
+            if (Array.isArray(scrapeTemplate[hostname]['adjustments'][key])) {
+                data[key] = data[key].replace(scrapeTemplate[hostname]['adjustments'][key][0],
+                    scrapeTemplate[hostname]['adjustments'][key][1])
+            } else {
+                data[key] = data[key].replace(scrapeTemplate[hostname]['adjustments'][key], '')
+            }
         }
     }
     chrome.storage.sync.set({ scrapedData: data });
