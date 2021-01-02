@@ -137,7 +137,8 @@ export default class Main extends Component {
 
     onTrackClicked = () => {
         if (this.props.scrapedData.title !== 'Not Available' &&
-            this.props.scrapedData.price !== 'Not Available') {
+            this.props.scrapedData.price !== 'Not Available' &&
+            this.props.scrapedData.price !== undefined) {
             if (this.state.isCollapsed === true && !this.state.isTracking) {
                 this.setState({
                     isCollapsed: false,
