@@ -47,7 +47,6 @@ class ProductsTable extends React.Component {
                         </div>
                         }
                     )}
-
                 </div>
             </div>
 
