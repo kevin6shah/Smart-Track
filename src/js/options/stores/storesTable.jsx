@@ -30,7 +30,7 @@ class StoresTable extends React.Component {
                         </div>
                     )}
                 </div>
-                <a className='text-muted' href="https://clearbit.com" style={{paddingBottom: '30px'}}>Logos provided by Clearbit</a>
+                <a className='text-muted' href="https://clearbit.com" style={{paddingBottom: '30px', fontSize: '12px'}}>Logos provided by Clearbit</a>
             </div>
 
         );
