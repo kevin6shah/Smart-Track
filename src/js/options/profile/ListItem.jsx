@@ -14,7 +14,7 @@ export default class ListItem extends Component {
 
     onEditClicked = (ID) => {
         console.log(ID)
-        chrome.runtime.openOptionsPage()
+        // chrome.runtime.openOptionsPage()
     }
     
     render() {
