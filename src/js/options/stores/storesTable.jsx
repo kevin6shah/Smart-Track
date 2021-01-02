@@ -17,13 +17,14 @@ class StoresTable extends React.Component {
                     {this.props.storeData.map((obj) =>
                         <div key={obj.id} className="card store-card m-4 box-shadow">
                             <div className="card-header">
-                                <h4 className="my-0 font-weight-normal">{obj.id[0].toUpperCase() +
-                                    obj.id.toLowerCase().slice(1)}</h4>
+                                <h4 className="my-0 font-weight-normal"
+                                    style={{ textTransform: 'capitalize' }}>{obj.id}</h4>
                             </div>
                             <img className="card-img-top store-img" src={'https://logo.clearbit.com/' + obj.hostname.replace('www.', '') + '?size=200'} alt={obj.hostname.replace('www.', '')}
                                 style={{objectFit: 'contain', padding: '10px'}}/>
                             <a 
                                 className="btn btn-primary m-2" 
+                                target="_blank" rel="noopener noreferrer"
                                 href={'https://' + obj.hostname}>
                                 Open
                             </a>

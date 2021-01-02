@@ -56,7 +56,8 @@ class ProductsTable extends React.Component {
                                     <li>
                                         {obj.priceHistory[obj.priceHistory.length - 1].date.toDate().toString()}
                                     </li>
-                                    <li><a href={obj.url}>Product Link</a></li>
+                                    <li><a target="_blank" rel="noopener noreferrer"
+                                        href={obj.url}>Product Link</a></li>
                                 </ul>
                                 <button
                                     className="btn btn-primary m-2"
