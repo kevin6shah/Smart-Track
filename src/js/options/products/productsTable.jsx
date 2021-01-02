@@ -31,7 +31,9 @@ class ProductsTable extends React.Component {
                                     ${obj.priceHistory[obj.priceHistory.length - 1].price}
                                 </h1>
                                 <ul className="list-unstyled mt-3 mb-4">
-                                    <li><h5>{obj.title}</h5></li>
+                                    <li><h5>{(obj.title.length > 50) ?
+                                        obj.title.slice(0, 50) + '...' :
+                                        obj.title}</h5></li>
                                     <li>
                                         {obj.priceHistory[obj.priceHistory.length - 1].date.toDate().toString()}
                                     </li>

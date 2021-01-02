@@ -1,55 +1,20 @@
 import React from "react";
 import firebase from 'firebase/app';
 import 'firebase/auth';
-
 import './profile.css';
 import ProfileImg from '../../../img/profile.png';
-import SubmitButton from '../submitButton/submitButton';
+import TrackedList from './TrackedList'
 
 class Profile extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            password: '',
+            selected: this.props.init !== undefined ?
+                this.props.init : 'about',
             fetchState: 'idle'
         };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
-
-    }
-
-    handleChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        this.setState({ fetchState: 'loading' });
-        firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
-            .then((user) => {
-                console.log('user', user, user.user.uid);
-                localStorage.setItem('uid', user.user.uid);
-                this.setState({ fetchState: 'success' });
-
-                let role = user.role;
-                if (!user.role) role = 'basic'
-
-                this.props.onLoginStateChange(user.email, role, user.uid);
-
-                // //if we want to route back to previous page
-                // let history = this.props.history;
-                // let location = this.props.location;
-                // let { from } = location.state || { from: { pathname: "/" } };
-                // history.replace(from);
-
-            })
-            .catch((error) => {
-                console.log(error)
-                this.setState({ fetchState: 'failure' });
-            });
     }
 
     handleLogout(event) {
@@ -68,8 +33,15 @@ class Profile extends React.Component {
             });
     }
 
+    onTabClick = (tab) => {
+        this.setState({
+            selected: tab
+        })
+    }
+
     render() {
         const profile = this.props.profile
+        console.log(this.state.selected)
 
         return (
             <div className="container w-75 mt-4 emp-profile">
@@ -91,22 +63,29 @@ class Profile extends React.Component {
                                     {profile.displayName}
                                 </h5>
                                 <h6>
-                                    {profile.uid}
+                                    {profile.username}
                                     </h6>
-                                <p className="proile-rating">ACCOUNT TYPE : <span>{profile.role.charAt(0).toUpperCase() +
-                                        profile.role.toLowerCase().slice(1) + ' User'}</span></p>
+                                <p className="proile-rating">ACCOUNT TYPE : <span>{(profile.role !== undefined) ?
+                                    profile.role.charAt(0).toUpperCase() +
+                                        profile.role.toLowerCase().slice(1) + ' User' : 'User'}</span></p>
                                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                                     <li className="nav-item">
-                                        <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                                        <a className={"nav-link" + ((this.state.selected === 'about') ? ' active' : '')}
+                                            id="about-tab" data-toggle="tab" onClick={this.onTabClick.bind(this, 'about')} role="tab" aria-controls="about" aria-selected="true" style={{ cursor: 'pointer' }}>About</a>
                                     </li>
                                     <li className="nav-item">
-                                        <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
+                                        <a className={"nav-link" + ((this.state.selected === 'tracklist') ? ' active' : '')}
+                                            id="tracklist-tab" data-toggle="tab" onClick={this.onTabClick.bind(this, 'tracklist')} role="tab" aria-controls="tracklist" aria-selected="false" style={{ cursor: 'pointer' }}>Tracking List</a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <div className="col-md-2">
-                            <input type="submit" className="profile-edit-btn mb-2" name="btnAddMore" value="Edit Profile" />
+                            <button type="btn"
+                                className="profile-edit-btn mb-2 p-1"
+                                name="btnAddMore" >
+                                Edit
+                            </button>
                             <button type="btn"
                                 className="btn btn-warning rounded-pill w-75"
                                 name="log-out"
@@ -132,13 +111,14 @@ class Profile extends React.Component {
                         </div>
                         <div className="col-md-8">
                             <div className="tab-content profile-tab" id="myTabContent">
-                                <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div className={"tab-pane fade" + ((this.state.selected === 'about') ? ' show active' : '')}
+                                    id="about" role="tabpanel" aria-labelledby="about-tab">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <label>Email</label>
+                                            <label>User ID</label>
                                         </div>
                                         <div className="col-md-6">
-                                            <p>{profile.username}</p>
+                                            <p>{profile.uid}</p>
                                         </div>
                                     </div>
                                     <div className="row">
@@ -150,53 +130,9 @@ class Profile extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Experience</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>Expert</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Hourly Rate</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>10$/hr</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Total Projects</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>230</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <label>English Level</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>Expert</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Availability</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>6 months</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <label>Your Bio</label><br />
-                                            <p>Your detail description</p>
-                                        </div>
-                                    </div>
+                                <div className={"tab-pane fade" + ((this.state.selected === 'tracklist') ? ' show active' : '')}
+                                    id="tracklist" role="tabpanel" aria-labelledby="tracklist-tab">
+                                    <TrackedList/>
                                 </div>
                             </div>
                         </div>

@@ -90,3 +90,41 @@
     font-weight: 600;
     color: #0062cc;
 }
+
+hr {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border: 0;
+  border-top: 1px solid #0000001a;
+}
+
+.closeButton {
+  position: absolute;
+  right: 10px;
+  border: none;
+  padding: 3px 10px;
+  border-radius: 50px;
+  background-color: #d8d8d8;
+  color: rgb(114, 114, 114);
+  cursor: pointer;
+  outline: none;
+  transition: 0.3s;
+}
+
+.closeButton:hover {
+  background-color: #c40000;
+  color: white;
+}
+
+.itemContainer {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  height: 100px;
+  font-family: "Montserrat", sans-serif;
+  color: black;
+}
+
+.itemPic {
+  object-fit: contain;
+}

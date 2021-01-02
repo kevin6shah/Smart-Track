@@ -126,6 +126,20 @@ class OptionPage extends React.Component {
                         </ProtectedRoute>
                     </Route>
 
+                    <Route path="/tracklist" >
+                        <ProtectedRoute
+                            path="/tracklist"
+                            profile={this.state.profile}>
+                            {/* FUKCING NONSENSE THAT I HAVE TO COPY
+                                THE FUCKIN GPROPS ITS SUPPOSED TO PASS THROUGH */}
+                            <Profile
+                                onLoginStateChange={this.loginStateChange}
+                                profile={this.state.profile}
+                                init='tracklist'
+                            />
+                        </ProtectedRoute>
+                    </Route>
+
                     <Route exact path="/">
                         <Landing
                             profile={this.state.profile}
