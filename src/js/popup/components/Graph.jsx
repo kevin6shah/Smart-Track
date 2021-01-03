@@ -14,7 +14,7 @@ export default class Graph extends Component {
 
     componentDidMount() {
         try {
-            let hostname = new URL(this.props.scrapedData.url).hostname.replace('www.', '')
+            let hostname = new URL(this.props.scrapedData.url).hostname.replace(/www\d{0,3}[.]/, '')
             hostname = hostname.substring(0, hostname.indexOf('.'))
             const ID = this.getItemID(hostname, this.props.scrapedData.title)
             this.props.instance.collection('items')

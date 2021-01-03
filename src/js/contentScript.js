@@ -380,7 +380,7 @@ function getTemplateSelector(html) {
 }
 
 const rawHtml = DOMtoString(document)
-let hostname = window.location.hostname.replace('www.', '')
+let hostname = window.location.hostname.replace(/www\d{0,3}[.]/, '')
 hostname = hostname.substring(0, hostname.indexOf('.'))
 
 chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {

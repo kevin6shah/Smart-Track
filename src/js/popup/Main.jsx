@@ -23,7 +23,7 @@ export default class Main extends Component {
         this.state.instance.collection('users')
             .doc(UID).get().then((result) => {
                 try {
-                    let hostname = new URL(this.props.scrapedData.url).hostname.replace('www.', '')
+                    let hostname = new URL(this.props.scrapedData.url).hostname.replace(/www\d{0,3}[.]/, '')
                     hostname = hostname.substring(0, hostname.indexOf('.'))
                     this.setState({
                         isTracking: Object.keys(result.data()['trackedMap'])
@@ -49,7 +49,7 @@ export default class Main extends Component {
     startTracking = async () => {
         let hostname = ''
         try {
-            hostname = new URL(this.props.scrapedData.url).hostname.replace('www.', '')
+            hostname = new URL(this.props.scrapedData.url).hostname.replace(/www\d{0,3}[.]/, '')
             hostname = hostname.substring(0, hostname.indexOf('.'))
         } catch (e) {
             alert('This website cannot be tracked!')

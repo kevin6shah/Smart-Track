@@ -31,7 +31,7 @@ class ProductsTable extends React.Component {
                         let hostname = ''
                         let host = ''
                         try {
-                            hostname = new URL(obj.url).hostname.replace('www.', '')
+                            hostname = new URL(obj.url).hostname.replace(/www\d{0,3}[.]/, '')
                             host = hostname.substring(0, hostname.indexOf('.'))
                         } catch (e) { }
                         

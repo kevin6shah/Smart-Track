@@ -1,6 +1,7 @@
 import ssl
 import smtplib
 import os
+import re
 import logging
 import datetime
 from dotenv import load_dotenv, find_dotenv
@@ -192,7 +193,7 @@ def scrape(wd, db, templates, items):
         title = items[ID]['title'][:20]
         url = items[ID]['url']
         parsedURL = urlparse(url)
-        hostname = parsedURL.hostname.replace('www.', '')
+        hostname = re.sub(r'www\d{0,3}[.]', '', parsedURL.hostname)
         hostname = hostname[:hostname.index('.')]
 
         if hostname not in templates:

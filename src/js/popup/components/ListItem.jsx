@@ -38,9 +38,12 @@ export default class ListItem extends Component {
         let host = ''
         
         try {
-            hostname = new URL(this.props.scrapedData.url).hostname.replace('www.', '')
+            hostname = new URL(this.props.scrapedData.url).hostname.replace(/www\d{0,3}[.]/, '')
             host = hostname.substring(0, hostname.indexOf('.'))
-        } catch (e) {}
+        } catch (e) { }
+        
+        console.log(hostname)
+        console.log(host)
 
         return (
             <div style={{ textAlign: 'left' }}>

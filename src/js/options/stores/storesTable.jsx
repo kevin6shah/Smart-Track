@@ -20,7 +20,7 @@ class StoresTable extends React.Component {
                                 <h4 className="my-0 font-weight-normal"
                                     style={{ textTransform: 'capitalize' }}>{obj.id}</h4>
                             </div>
-                            <img className="card-img-top store-img" src={'https://logo.clearbit.com/' + obj.hostname.replace('www.', '') + '?size=200'} alt={obj.hostname.replace('www.', '')}
+                            <img className="card-img-top store-img" src={'https://logo.clearbit.com/' + obj.hostname.replace(/www\d{0,3}[.]/, '') + '?size=200'} alt={obj.hostname.replace(/www\d{0,3}[.]/, '')}
                                 style={{objectFit: 'contain', padding: '10px'}}/>
                             <a 
                                 className="btn btn-primary m-2" 
