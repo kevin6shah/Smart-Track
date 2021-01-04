@@ -14,3 +14,4 @@ chromedriver*
 *.pem
 *.log
 backend/connect.txt
+backend/*.out
