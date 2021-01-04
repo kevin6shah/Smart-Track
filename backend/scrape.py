@@ -200,7 +200,7 @@ def get_templates(db):
     return docs_dict
 
 
-def scrape(wd, db, templates, items):
+def scrape(wd, db, templates, items, sendEmails=False):
     '''
     Main scrape method
     @TODO break this down into multiple methods
@@ -251,7 +251,8 @@ def scrape(wd, db, templates, items):
                     logger.info(
                         f'updating price for {title} to {newPrice}')
                     update_db(db, items, ID, newPrice)
-                    sendEmails(items[ID], newPrice)
+                    if (sendEmails):
+                        sendEmails(items[ID], newPrice)
                 elementFound = True
                 success += 1
                 break
@@ -269,7 +270,8 @@ def scrape(wd, db, templates, items):
     print(Fore.CYAN + f'Scraping Finished | Success Rate: {successRate}%')
     logger.info(
         f'Scraping Finished | Success Rate: {successRate}%')
-    sendConfirmation(successRate)
+    if (sendEmails):
+        sendConfirmation(successRate)
 
 
 def update_db(db, items, k, new_price):
@@ -308,7 +310,10 @@ def main():
         templates = get_templates(db)
 
         logger.info("Scraping")
-        scrape(wd, db, templates, items)
+        if (args.list):
+            scrape(wd, db, templates, items)
+        else:
+            scrape(wd, db, templates, items, True)
     except Exception as e:
         print(e)
         logger.error(e)
