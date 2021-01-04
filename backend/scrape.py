@@ -283,8 +283,11 @@ def update_db(db, items, k, new_price):
 def main():
     parser = argparse.ArgumentParser(
         description='Scrapes all the websites for Smart Track')
-    parser.add_argument('-l', '--list', nargs='+',
-                        help='Only scrape for the following IDs. Ex: [1,2,3]', required=False)
+    group = parser.add_mutually_exclusive_group(required=False)
+    group.add_argument('-l', '--list', nargs='+',
+                        help='Only scrape for the following IDs. Ex: [1,2,3]')
+    group.add_argument(
+        '-s', '--source', help="Get page source of this ID")
 
     args = parser.parse_args()
 
@@ -303,6 +306,13 @@ def main():
         items = {}
         if (args.list):
             items = get_items_with_list(db, args.list)
+        elif (args.source):
+            items = get_items_with_list(db, [args.source])
+            if (len(items) != 0):
+                wd.get(items[args.source]['url'])
+                print(wd.page_source)
+            wd.quit()
+            exit()
         else:
             items = get_items(db)
 
