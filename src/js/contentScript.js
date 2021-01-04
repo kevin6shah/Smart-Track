@@ -422,3 +422,5 @@ chrome.storage.sync.get('templates', function(backgroundData) {
     console.log(data)
     chrome.storage.sync.set({ scrapedData: data });
 });
+
+// console.log(rawHtml)
