@@ -72,21 +72,39 @@ function scrapeItem(template, soup, itemType, getElement) {
     try {
         const scrapingAttributes = template[itemType]['attributes']
         let attributeArrays = []
-
+        
+        // Strips off the attributes to get it ready for cartesian
+        // Ex. {id: [1,2,3], class: [2,3]} becomes [[1,2,3], [2,3]]
+        // Ex2. {id: [1]} becomes [[1]]}
         for (const attr in scrapingAttributes) {
             attributeArrays.push(scrapingAttributes[attr])
         }
-
+        
+        // Makes [[1,2,3]] => [[1], [2], [3]]
+        // Or [[1,2], [2,3]] => [[1,2], [1,3], [2,2], [2,3]]
+        // Or [[1]] => [[1]]
         attributeArrays = cartesian(...attributeArrays)
 
         for (var i = 0; i < attributeArrays.length; i++) {
             let attributeMap = {}
+            let alternateMap = {}
             let j = 0
             for (const attr in scrapingAttributes) {
+                if (attr === 'class') {
+                    alternateMap[[attr]] = attributeArrays[i][j].split(" ")
+                } else {
+                    alternateMap[[attr]] = attributeArrays[i][j]
+                }
                 attributeMap[[attr]] = attributeArrays[i][j]
                 j = j + 1
             }
-            const scrapingElement = soup.find(template[itemType]['tag'], attributeMap)
+            
+            let scrapingElement = soup.find(template[itemType]['tag'], attributeMap)
+            
+            if (scrapingElement === undefined && alternateMap['class'] !== undefined) {
+                scrapingElement = soup.find(template[itemType]['tag'], alternateMap)
+            }
+
             if (scrapingElement !== undefined) {
                 if (itemType === 'price') {
                     return currencyToFloat(scrapingElement.getText().trim())
