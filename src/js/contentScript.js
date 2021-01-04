@@ -423,4 +423,4 @@ chrome.storage.sync.get('templates', function(backgroundData) {
     chrome.storage.sync.set({ scrapedData: data });
 });
 
-// console.log(rawHtml)
+console.log(rawHtml)
