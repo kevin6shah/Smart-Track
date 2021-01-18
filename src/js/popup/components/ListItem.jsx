@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
+import firebase from 'firebase'
+require("firebase/firestore");
 
 export default class ListItem extends Component {
     state = {
         imgErrorHandler: '',
+        editing: false,
+        threshold: this.props.scrapedData.threshold,
     }
     
     getTitle = () => {
@@ -17,8 +21,51 @@ export default class ListItem extends Component {
     }
 
     onEditClicked = (ID) => {
-        console.log(ID)
-        chrome.runtime.openOptionsPage()
+        this.setState({
+            editing: true,
+        })
+    }
+
+    onSubmit = () => {
+        if (this.checkInput()) {
+            var db = firebase.firestore()
+            const UID = localStorage.getItem('uid').toString()
+            db.collection('users').doc(UID).get().then((snapshot) => {
+                let data = snapshot.data()
+                data['trackedMap'][[this.props.scrapedData.id]] = parseFloat(this.state.threshold)
+                db.collection('users').doc(UID).update({
+                    trackedMap: data['trackedMap']
+                })
+                db.collection('items').doc(this.props.scrapedData.id)
+                    .get().then((itemSnapshot) => {
+                    let itemData = itemSnapshot.data()
+                    itemData['emailMap'][[data.email]] = parseFloat(this.state.threshold)
+                        db.collection('items').doc(this.props.scrapedData.id)
+                            .update({
+                        emailMap: itemData['emailMap']
+                    })
+                    
+                })
+            })
+            this.setState({
+                editing: false,
+            })
+        }
+    }
+
+    onChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value,
+        })
+    }
+
+    checkInput = () => {
+        if (!isNaN(this.state.threshold) &&
+            this.state.threshold !== null &&
+            this.state.threshold !== '' &&
+            this.state.threshold > 0 && 
+            parseFloat(this.state.threshold) < this.props.scrapedData.price) return true;
+        else return false;
     }
 
     onError = (hostname) => {
@@ -41,9 +88,6 @@ export default class ListItem extends Component {
             hostname = new URL(this.props.scrapedData.url).hostname.replace(/www\d{0,3}[.]/, '')
             host = hostname.substring(0, hostname.indexOf('.'))
         } catch (e) { }
-        
-        console.log(hostname)
-        console.log(host)
 
         return (
             <div style={{ textAlign: 'left' }}>
@@ -95,22 +139,46 @@ export default class ListItem extends Component {
                             <p style={{
                                 fontWeight: 500,
                             }}>Threshold Value:</p>
-                            <button style={{
-                                color: '#4caf50',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                                backgroundColor: 'white',
-                                border: 'none',
-                                outline: 'none'
-                            }} onClick={this.onEditClicked.bind(this, this.props.scrapedData.id)}>
-                                <i className="far fa-edit" style={{
-                                    paddingRight: '5px'
-                                }}></i>
-                                <span style={{
-                                    fontFamily: "Montserrat",
-                                    fontSize: '14px',
-                                }}>${this.props.scrapedData.threshold}</span>
-                            </button>
+                            {this.state.editing ? 
+                                <span className="form-group">
+                                    $<input type="text"
+                                        name="threshold"
+                                        value={this.state.threshold}
+                                        onChange={this.onChange} style={{
+                                            color: '#4caf50',
+                                            fontWeight: 500,
+                                            border: '1px solid #4caf50',
+                                            outline: 'none',
+                                            width: '75px',
+                                        }} />
+                                    <button
+                                        onClick={this.onSubmit}
+                                        className="fa fa-check" style={{
+                                        color: '#4caf50',
+                                        cursor: 'pointer',
+                                        backgroundColor: 'white',
+                                        padding: '0 5px',
+                                        border: 'none',
+                                        outline: 'none',
+                                    }} />
+                                </span>:
+                                <button style={{
+                                    color: '#4caf50',
+                                    fontWeight: 500,
+                                    cursor: 'pointer',
+                                    backgroundColor: 'white',
+                                    border: 'none',
+                                    outline: 'none'
+                                }} onClick={this.onEditClicked}>
+                                    <i className="far fa-edit" style={{
+                                        paddingRight: '5px'
+                                    }}></i>
+                                    <span style={{
+                                        fontFamily: "Montserrat",
+                                        fontSize: '14px',
+                                    }}>${this.state.threshold}</span>
+                                </button>
+                            }
                         </span>
                         <hr />
                 </div>
