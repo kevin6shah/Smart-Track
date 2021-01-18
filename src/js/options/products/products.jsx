@@ -12,7 +12,9 @@ class Products extends React.Component {
         this.state = {
             fetchState: 'idle',
             products: {},
-            clickProd: null
+            clickProd: null,
+            selectedIdx: 0,
+            numPages: 0,
         };
         this.setProd = this.setProd.bind(this);
 
@@ -27,31 +29,42 @@ class Products extends React.Component {
         console.log(prod);
     }
 
-
-    componentDidMount() {
+    fetchProds = (pageNum) => {
         this.setState({ fetchState: 'loading' });
         let db = firebase.firestore();
 
         db.collection('items')
             .get()
             .then(querySnapshot => {
-                const data = querySnapshot.docs.map(
+                let data = querySnapshot.docs.map(
                     doc => {
                         const dataNotId = doc.data();
                         return { id: doc.id, ...dataNotId };
                     }
                 );
-                this.setState({ fetchState: 'success', products: data });
+                data.sort(function (a, b) {
+                    return Object.keys(b.emailMap).length - Object.keys(a.emailMap).length
+                })
+                const numP = Math.ceil(data.length / 12)
+                data = data.slice(pageNum * 12, (pageNum * 12) + 12)
+                this.setState({
+                    fetchState: 'success',
+                    products: data,
+                    numPages: numP,
+                    selectedIdx: pageNum,
+                });
             })
             .catch(error => {
                 console.log(error);
                 this.setState({ fetchState: 'failure' });
-
             });
     }
 
+    componentDidMount() {
+        this.fetchProds(this.state.selectedIdx)
+    }
+
     render() {
-        console.log('clicked', this.state.clickProd);
         return (
             <div className="container-fluid w-75 mt-4">
                 {(this.state.clickProd != null) ?
@@ -62,9 +75,12 @@ class Products extends React.Component {
                         />
                     ) : (
                         <ProductsTable
+                            selectedIdx={this.state.selectedIdx}
+                            numPages={this.state.numPages}
                             fetchState={this.state.fetchState}
                             productData={this.state.products}
                             setProd={this.setProd}
+                            onSelectedPage={this.fetchProds}
                         />
                     )}
             </div>

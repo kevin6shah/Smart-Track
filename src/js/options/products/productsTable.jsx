@@ -70,6 +70,29 @@ class ProductsTable extends React.Component {
                         }
                     )}
                 </div>
+                <nav aria-label="Page navigation">
+                    <ul className="pagination justify-content-center">
+                        <li className={this.props.selectedIdx === 0 ? "page-item disabled" : "page-item"}>
+                            <a className="page-link" href="#" onClick={this.props.onSelectedPage.bind(this, this.props.selectedIdx - 1)}>
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        {Array.from({length: this.props.numPages}, (item, index) => (
+                            <li className={"page-item" + (this.props.selectedIdx === index ? " active" : "")} key={index}>
+                                <a className="page-link" href="#" onClick={this.props.onSelectedPage.bind(this, index)}>
+                                    {index + 1}
+                                </a>
+                            </li>
+                        ))}
+                        <li className={this.props.selectedIdx === this.props.numPages - 1 ? "page-item disabled" : "page-item"}>
+                            <a className="page-link" href="#" onClick={this.props.onSelectedPage.bind(this, this.props.selectedIdx + 1)}>
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
                 <a className='text-muted' href="https://clearbit.com" style={{paddingBottom: '30px', fontSize: '12px'}}>Logos provided by Clearbit</a>
             </div>
 
