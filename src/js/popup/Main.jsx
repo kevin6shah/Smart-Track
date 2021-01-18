@@ -63,6 +63,12 @@ export default class Main extends Component {
         const userSnapshot = await userDocReference.get()
         const email = userSnapshot.data()['email']
         const threshold = this.currencyToFloat(this.state.threshold)
+        const templateDoc = await instance.collection('templates').doc(hostname).get()
+
+        if (templateDoc.exists === false) {
+            alert("This item cannot be tracked. Please try again later")
+            return
+        }
 
         itemDocReference.get().then((item) => {
             let data = {
@@ -156,12 +162,23 @@ export default class Main extends Component {
                 }
             }
         } else {
-            chrome.tabs.getSelected(null, function (tab) {
-                if (confirm("Unfortunately, there are no tracking templates for this item. But, you can help us make one. Would you like to continue?")) {
-                    window.close()
-                    chrome.tabs.sendRequest(tab.id, { greeting: "startSelector" });
+            const instance = this.state.instance
+            const UID = localStorage.getItem('uid').toString()
+            const userDocReference = instance.collection('users').doc(UID)
+            userDocReference.get().then((snapshot) => {
+                const data = snapshot.data()
+                if (data['role'] === 'admin') {
+                    chrome.tabs.getSelected(null, function (tab) {
+                        if (confirm("Unfortunately, there are no tracking templates for this item. But, you can help us make one. Would you like to continue?")) {
+                            window.close()
+                            chrome.tabs.sendRequest(tab.id, { greeting: "startSelector" });
+                        }
+                    });
+                } else {
+                    alert("Unfortunately, this webpage cannot be tracked as of now.")
+                    return
                 }
-            });
+            })
         }
     }
 
