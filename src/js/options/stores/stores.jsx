@@ -39,7 +39,6 @@ class Stores extends React.Component {
     }
 
     render() {
-        console.log('clicked', this.state.clickProd);
         return (
             <div className="container-fluid w-75 mt-4">
                 <StoresTable

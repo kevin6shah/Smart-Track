@@ -24,6 +24,7 @@ class OptionsNavbar extends React.Component {
                 <Link to='/stores' className="nav-link">Stores </Link>
                 <Link to='/tracklist' className="nav-link">Tracking List</Link>
                 <Link to='/templates' className="nav-link">Templates </Link>
+                <Link to='/users' className="nav-link">Users </Link>
             </>;
         }
 

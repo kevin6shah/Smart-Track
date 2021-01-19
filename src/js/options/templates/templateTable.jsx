@@ -79,7 +79,6 @@ class TemplateTable extends React.Component {
     }
 
     render() {
-
         return (
             <div className="dashboardTable mx-auto bg-white rounded shadow">
                 <table className="table table-responsive-lg table-sm

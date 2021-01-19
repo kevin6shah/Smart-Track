@@ -1,0 +1,11 @@
+.container {
+  padding: 2rem 0rem;
+}
+
+td button {
+  margin: 0 5px;
+}
+
+.table-image {
+  vertical-align: middle;
+}
