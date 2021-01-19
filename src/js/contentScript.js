@@ -47,9 +47,14 @@ function DOMtoString(document_root) {
     return html;
 }
 
+function toFixed(num, fixed) {
+    var re = new RegExp('^-?\\d+(?:\.\\d{0,' + (fixed || -1) + '})?');
+    return num.toString().match(re)[0];
+}
+
 function currencyToFloat(currency) {
-    return parseFloat(parseFloat(currency.
-                        replace(/[^0-9.-]+/g, "")).toFixed(2))
+    const num = currency.replace(/[^0-9.-]+/g, "")
+    return parseFloat(toFixed(num, 2))
 }
 
 function cartesian(...args) {
