@@ -12,7 +12,8 @@ class Profile extends React.Component {
         this.state = {
             selected: this.props.init !== undefined ?
                 this.props.init : 'about',
-            fetchState: 'idle'
+            fetchState: 'idle',
+            editing: false,
         };
         this.handleLogout = this.handleLogout.bind(this);
     }
@@ -36,6 +37,14 @@ class Profile extends React.Component {
     onTabClick = (tab) => {
         this.setState({
             selected: tab
+        })
+    }
+
+    onEdit = (e) => {
+        e.preventDefault();
+        this.setState({
+            selected: 'about',
+            editing: !this.state.editing
         })
     }
 
@@ -81,10 +90,10 @@ class Profile extends React.Component {
                             </div>
                         </div>
                         <div className="col-md-2">
-                            <button type="btn"
-                                className="profile-edit-btn mb-2 p-1"
-                                name="btnAddMore" >
-                                Edit
+                            <button className={"mb-2 p-1" + (this.state.editing ? " profile-done-btn"
+                                : " profile-edit-btn")}
+                                onClick={this.onEdit} style={{outline: 'none'}}>
+                                {this.state.editing ? 'Done' : 'Edit'}
                             </button>
                             <button type="btn"
                                 className="btn btn-warning rounded-pill w-75"
@@ -96,7 +105,7 @@ class Profile extends React.Component {
                     </div>
                     <div className="row">
                         <div className="col-md-4">
-                            <div className="profile-work">
+                            {/* <div className="profile-work">
                                 <p>WORK LINK</p>
                                 <a href="">Website Link</a><br />
                                 <a href="">Bootsnipp Profile</a><br />
@@ -107,7 +116,7 @@ class Profile extends React.Component {
                                 <a href="">WordPress</a><br />
                                 <a href="">WooCommerce</a><br />
                                 <a href="">PHP, .Net</a><br />
-                            </div>
+                            </div> */}
                         </div>
                         <div className="col-md-8">
                             <div className="tab-content profile-tab" id="myTabContent">
