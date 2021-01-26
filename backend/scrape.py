@@ -48,7 +48,7 @@ Your Smart Track Team
         server.sendmail(sender_email, receiver_email, message)
 
 
-def sendEmails(item, newPrice):
+def notifyUsers(item, newPrice):
     emailMap = item['emailMap']
     title = item['title']
     port = 587  # For starttls
@@ -252,7 +252,7 @@ def scrape(wd, db, templates, items, sendEmails=False):
                         f'updating price for {title} to {newPrice}')
                     update_db(db, items, ID, newPrice)
                     if (sendEmails):
-                        sendEmails(items[ID], newPrice)
+                        notifyUsers(items[ID], newPrice)
                 elementFound = True
                 success += 1
                 break
