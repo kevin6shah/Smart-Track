@@ -285,7 +285,7 @@ def main():
         description='Scrapes all the websites for Smart Track')
     group = parser.add_mutually_exclusive_group(required=False)
     group.add_argument('-l', '--list', nargs='+',
-                        help='Only scrape for the following IDs. Ex: [1,2,3]')
+                        help='Only scrape for the following IDs. Ex: --list 1 2 3')
     group.add_argument(
         '-s', '--source', help="Get page source of this ID")
 
