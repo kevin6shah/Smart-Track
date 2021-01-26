@@ -26,8 +26,6 @@ function fetchData() {
         querySnapshot.forEach(function (doc) {
             templates[[doc.id]] = doc.data()
         });
-
-        console.log(templates)
         chrome.storage.sync.set({ templates: templates })
     });
 }
