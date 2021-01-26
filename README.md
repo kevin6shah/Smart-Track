@@ -15,15 +15,15 @@ Online shopping has become the new norm when it comes to purchasing items. Compa
 
 <table>
   <tr>
-    <td><img src="/assets/1.png"></td>
-    <td><img src="/assets/2.png"></td>
+    <td width=50%><img src="/assets/1.png"></td>
+    <td width=50%><img src="/assets/2.png"></td>
   </tr>
   <tr>
     <td><img src="/assets/3.png"></td>
-    <td><img src="/assets/4.png"></td>
+    <td><img src="/assets/5.png"></td>
   </tr>
   <tr>
-    <td><img src="/assets/5.png"></td>
+    <td><img src="/assets/4.png"></td>
     <td><img src="/assets/6.png"></td>
   </tr>
 </table>
