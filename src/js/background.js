@@ -27,6 +27,7 @@ function fetchData() {
             templates[[doc.id]] = doc.data()
         });
 
+        console.log(templates)
         chrome.storage.sync.set({ templates: templates })
     });
 }
@@ -47,6 +48,7 @@ chrome.runtime.onInstalled.addListener(() => {
 })
 
 chrome.runtime.onStartup.addListener(() => {
+    initializeFirebase()
     fetchData()
 })
 
