@@ -17,7 +17,7 @@ class ProductDetail extends React.Component {
                 </button>
                 <div className="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
                     <h2 className="display-4">Details</h2>
-                    <h5>{prod.title}</h5>
+                    <h5>{prod.title + ' [' + prod.id + ']'}</h5>
 
                     <Graph
                         prod={prod}
