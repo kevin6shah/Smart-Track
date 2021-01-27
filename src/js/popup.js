@@ -23,7 +23,6 @@ function initializeFirebase() {
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
 }
 
 initializeFirebase()

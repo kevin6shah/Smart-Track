@@ -17,7 +17,6 @@ function initializeFirebase() {
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
 }
 
 function DOMtoString(document_root) {
