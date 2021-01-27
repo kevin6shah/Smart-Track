@@ -10,7 +10,6 @@ require("firebase/firestore");
 export default class Main extends Component {
     state = {
         isTracking: false,
-        instance: firebase.firestore(),
         threshold: '',
         isCollapsed: true,
         error: false,
@@ -20,7 +19,8 @@ export default class Main extends Component {
     
     componentDidMount() {
         const UID = localStorage.getItem('uid').toString()
-        this.state.instance.collection('users')
+        const instance = firebase.firestore()
+        instance.collection('users')
             .doc(UID).get().then((result) => {
                 try {
                     let hostname = new URL(this.props.scrapedData.url).hostname.replace(/www\d{0,3}[.]/, '')
@@ -57,7 +57,7 @@ export default class Main extends Component {
         }
         const ID = this.getItemID(hostname, this.props.scrapedData.title)
         const UID = localStorage.getItem('uid').toString()
-        const instance = this.state.instance
+        const instance = firebase.firestore()
         const userDocReference = instance.collection('users').doc(UID)
         const itemDocReference = instance.collection('items').doc(ID)
         const userSnapshot = await userDocReference.get()
@@ -162,23 +162,17 @@ export default class Main extends Component {
                 }
             }
         } else {
-            const instance = this.state.instance
-            const UID = localStorage.getItem('uid').toString()
-            const userDocReference = instance.collection('users').doc(UID)
-            userDocReference.get().then((snapshot) => {
-                const data = snapshot.data()
-                if (data['role'] === 'admin') {
-                    chrome.tabs.getSelected(null, function (tab) {
-                        if (confirm("Unfortunately, there are no tracking templates for this item. But, you can help us make one. Would you like to continue?")) {
-                            window.close()
-                            chrome.tabs.sendRequest(tab.id, { greeting: "startSelector" });
-                        }
-                    });
-                } else {
-                    alert("Unfortunately, this webpage cannot be tracked as of now.")
-                    return
-                }
-            })
+            if (this.state.role === '[admin]') {
+                chrome.tabs.getSelected(null, function (tab) {
+                    if (confirm("Unfortunately, there are no tracking templates for this item. But, you can help us make one. Would you like to continue?")) {
+                        window.close()
+                        chrome.tabs.sendRequest(tab.id, { greeting: "startSelector" });
+                    }
+                });
+            } else {
+                alert("Unfortunately, this webpage cannot be tracked as of now.")
+                return
+            }
         }
     }
 
@@ -212,7 +206,7 @@ export default class Main extends Component {
                     margin: '0px',
                 }}>{this.state.isTracking ? 'Stop Tracking' : 'Track'}</button>
                 <hr style={{marginBottom: '0px'}}/>
-                <Graph instance={this.state.instance} scrapedData={this.props.scrapedData}/>
+                <Graph scrapedData={this.props.scrapedData}/>
                 <hr style={{ marginTop: '0px' }} />
                 <button className='bigButton trackedListButton'
                 onClick={this.props.routeTo.bind(this, 'trackedlist')}>My Tracked List</button>

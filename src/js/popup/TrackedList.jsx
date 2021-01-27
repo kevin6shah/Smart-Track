@@ -8,46 +8,48 @@ require("firebase/firestore");
 export default class TrackedList extends Component {
     state = {
         itemMap: {},
-        instance: firebase.firestore(),
         status: 'Loading...',
     }
 
     componentDidMount() {
         const UID = localStorage.getItem('uid').toString()
-        const instance = this.state.instance
+        const instance = firebase.firestore()
         instance.collection('users')
             .doc(UID).get().then(async (result) => {
                 const trackedMap = result.data()['trackedMap']
-                let itemMap = {};
-                for (var ID in trackedMap) {
-                    if (trackedMap.hasOwnProperty(ID)) {
-                        const item = await instance.collection('items').doc(ID).get()
-                        itemMap[[ID]] = {
-                            'id': ID,
-                            'threshold': trackedMap[ID],
-                            'img': item.data()['img'],
-                            'title': item.data()['title'],
-                            'url': item.data()['url'],
-                            'price': item.data()['priceHistory'][item.data()['priceHistory'].length - 1]['price']
-                        }
-                    }
-                }
-                this.setState({
-                    itemMap: itemMap,
-                    status: (Object.keys(itemMap).length === 0) ? 'No Tracked Items...' : ''
-                })
+                const email = result.data()['email']
+                instance.collection('items')
+                    .where(firebase.firestore.FieldPath.documentId(), 'in', Object.keys(trackedMap)).get()
+                    .then((snapshot) => {
+                        let itemMap = {};
+                        snapshot.forEach(function(item) {
+                            itemMap[[item.id]] = {
+                                'id': item.id,
+                                'threshold': trackedMap[item.id],
+                                'img': item.data()['img'],
+                                'title': item.data()['title'],
+                                'url': item.data()['url'],
+                                'price': item.data()['priceHistory'][item.data()['priceHistory'].length - 1]['price']
+                            }
+                        });
+                        this.setState({
+                            trackedMap: trackedMap,
+                            itemMap: itemMap,
+                            status: (Object.keys(itemMap).length === 0) ? 'No Tracked Items...' : '',
+                            email: email,
+                        })
+                    })
         })
     }
 
     onItemClick = async (ID) => {
         const UID = localStorage.getItem('uid').toString()
-        const instance = this.state.instance
+        const instance = firebase.firestore()
         const userDocReference = instance.collection('users').doc(UID)
         const itemDocReference = instance.collection('items').doc(ID)
-        const userSnapshot = await userDocReference.get()
         const itemSnapshot = await itemDocReference.get()
-        const email = userSnapshot.data()['email']
-        let trackedMap = userSnapshot.data()['trackedMap']
+        const email = this.state.email
+        let trackedMap = this.state.trackedMap
         let emailMap = itemSnapshot.data()['emailMap']
         let itemMap = this.state.itemMap
 

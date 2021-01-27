@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import Plot from 'react-plotly.js';
+import firebase from 'firebase'
+require("firebase/firestore");
 
 export default class Graph extends Component {
     state = {
@@ -17,7 +19,8 @@ export default class Graph extends Component {
             let hostname = new URL(this.props.scrapedData.url).hostname.replace(/www\d{0,3}[.]/, '')
             hostname = hostname.substring(0, hostname.indexOf('.'))
             const ID = this.getItemID(hostname, this.props.scrapedData.title)
-            this.props.instance.collection('items')
+            const instance = firebase.firestore()
+            instance.collection('items')
                 .doc(ID).get().then((result) => {
                     if (result.exists) {
                         const priceHistory = result.data()['priceHistory']
