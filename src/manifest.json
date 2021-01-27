@@ -4,12 +4,7 @@
   "description": "A chrome extension to track ecommerce product prices",
   "permissions": [
     "alarms",
-    "activeTab", 
-    "declarativeContent", 
-    "storage",
-    "tabs",
-    "<all_urls>",
-    "https://*/*"
+    "storage"
   ],
   "options_page": "options.html",
   "background": {
