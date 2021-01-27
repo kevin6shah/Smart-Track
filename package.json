@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.5.3",
+    "emailjs-com": "^2.6.4",
     "firebase": "^8.0.2",
     "jssoup": "0.0.12",
     "plotly.js": "^1.58.0",
