@@ -1,6 +1,6 @@
 {
   "name": "Smart Track",
-  "version": "1.0.0",
+  "version": "5.1.0",
   "description": "A chrome extension to track ecommerce product prices",
   "permissions": [
     "alarms",

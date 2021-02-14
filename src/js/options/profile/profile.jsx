@@ -51,6 +51,7 @@ class Profile extends React.Component {
 
     render() {
         const profile = this.props.profile
+        const manifestData = chrome.runtime.getManifest();
         console.log(this.state.selected)
 
         return (
@@ -111,6 +112,7 @@ class Profile extends React.Component {
                                 <Link to='/feedback'>
                                     Leave A Feedback
                                 </Link><br />
+                                <p>Version {manifestData.version}</p>
                                 {/* <a href="">Bootsnipp Profile</a><br />
                                 <a href="">Bootply Profile</a>
                                 <p>SKILLS</p>
